@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
+	"./sql"
 )
 
 func main() {
+	sql.OpenDbConnection()
 	menuPrincipal()
 }
 
@@ -23,6 +25,7 @@ func menuPrincipal() {
 	
 	switch {
 		case opcion == 1:
+			sql.CrearDB()
 			fmt.Println("--------------------\n    ¡BD CREADA!\n--------------------")
 		
 		
