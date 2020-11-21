@@ -12,7 +12,7 @@ var opcion int=0
 
 func menuPrincipal() {
 
-		
+		for opcion != 99 {
 		fmt.Println("Digite una opcion")
 		fmt.Println("1: Crear BD")
 		
@@ -28,7 +28,7 @@ func menuPrincipal() {
 		
 		default:
 			fmt.Println("Ingrese una opcion valida")
+		}
 	}
-	
 }
 
