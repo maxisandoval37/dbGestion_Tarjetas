@@ -26,6 +26,12 @@ func CrearDB() {
 
 	defer _db.Close()
 
+
+	_, err = _db.Exec(`DROP DATABASE IF EXISTS tarjeta`)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	_, err = _db.Exec(`CREATE DATABASE tarjeta`)
 	if err != nil {
 		log.Fatal(err)
