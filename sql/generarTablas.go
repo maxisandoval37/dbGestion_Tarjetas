@@ -18,6 +18,8 @@ var consum=" consumo (nrotarjeta char(16),codseguridad char(4),nrocomercio int,m
 
 
 func CrearTablas() {
+	
+	auxResetearTablas()
 
 	_, err = db.Exec(`CREATE TABLE` + cliente + `
 											
@@ -39,6 +41,18 @@ func CrearTablas() {
 											
 					CREATE TABLE` + consum)			// Esta tabla no es parte del modelo de datos, pero se incluye para
 													// poder probar las funciones.
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func auxResetearTablas(){//limpia las tablas para evitar error cuando creamos encima de las ya creadas
+	_, err = db.Exec(`DROP SCHEMA public CASCADE`)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	_, err = db.Exec(`CREATE SCHEMA public`)
 	if err != nil {
 		log.Fatal(err)
 	}
