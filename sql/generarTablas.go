@@ -57,3 +57,8 @@ func auxResetearTablas(){//limpia las tablas para evitar error cuando creamos en
 		log.Fatal(err)
 	}
 }
+
+func MostrarTablas() {
+	var todasTablas =cliente+"\n"+"\n"+tarjeta+"\n"+"\n"+comercio+"\n"+"\n"+compra+"\n"+"\n"+rechazo+"\n"+"\n"+cierre+"\n"+"\n"+cabecera+"\n"+"\n"+detalle+"\n"+"\n"+alerta+"\n"+"\n"+consum
+	fmt.Println(todasTablas)
+}

@@ -18,6 +18,7 @@ func menuPrincipal() {
 			fmt.Println("Digite una opcion")
 			fmt.Println("1: Crear BD SQL")
 			fmt.Println("2: Crear Tablas")
+			fmt.Println("3: Mostrar Tablas de la BD")
 			
 
 			fmt.Println("99: Salir ")
@@ -31,6 +32,9 @@ func menuPrincipal() {
 			case opcion == 2:
 				sql.CrearTablas()
 				fmt.Println("------------------------\n    ¡TABLAS CREADAS!\n------------------------")
+			case opcion == 3:
+				sql.MostrarTablas()
+				fmt.Println("---------------------------\n    ¡TABLAS MOSTRADAS!\n---------------------------")
 			
 			
 			default:
