@@ -19,6 +19,7 @@ func menuPrincipal() {
 			fmt.Println("1: Crear BD SQL")
 			fmt.Println("2: Crear Tablas")
 			fmt.Println("3: Mostrar Tablas de la BD")
+			fmt.Println("4: Generar PKs y FKs")
 			
 
 			fmt.Println("99: Salir ")
@@ -28,13 +29,16 @@ func menuPrincipal() {
 		switch {
 			case opcion == 1:
 				sql.CrearDB()
-				fmt.Println("--------------------\n    ¡BD CREADA!\n--------------------")
+				fmt.Println("---------------------------\n    ¡BD CREADA!        \n--------------------")
 			case opcion == 2:
 				sql.CrearTablas()
-				fmt.Println("------------------------\n    ¡TABLAS CREADAS!\n------------------------")
+				fmt.Println("---------------------------\n    ¡TABLAS CREADAS!   \n------------------------")
 			case opcion == 3:
 				sql.MostrarTablas()
-				fmt.Println("---------------------------\n    ¡TABLAS MOSTRADAS!\n---------------------------")
+				fmt.Println("---------------------------\n    ¡TABLAS MOSTRADAS!  \n-------------------------")
+			case opcion == 4:
+				sql.GenerarPKs()
+				fmt.Println("---------------------------\n    ¡keys generafas!    \n-------------------------")
 			
 			
 			default:
