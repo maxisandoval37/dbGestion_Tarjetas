@@ -20,6 +20,7 @@ func menuPrincipal() {
 			fmt.Println("2: Crear Tablas")
 			fmt.Println("3: Mostrar Tablas de la BD")
 			fmt.Println("4: Generar PKs y FKs")
+			fmt.Println("5: Borrar PKs y FKs")
 			
 
 			fmt.Println("99: Salir ")
@@ -29,21 +30,25 @@ func menuPrincipal() {
 		switch {
 			case opcion == 1:
 				sql.CrearDB()
-				fmt.Println("---------------------------\n ¡BD CREADA! \n--------------------")
+				fmt.Println("--------------------\n    ¡BD CREADA!\n--------------------")
 			case opcion == 2:
 				sql.CrearTablas()
-				fmt.Println("---------------------------\n ¡TABLAS CREADAS! \n------------------------")
+				fmt.Println("------------------------\n    ¡TABLAS CREADAS!\n------------------------")
 			case opcion == 3:
 				sql.MostrarTablas()
-				fmt.Println("---------------------------\n ¡TABLAS MOSTRADAS! \n-------------------------")
+				fmt.Println("---------------------------\n    ¡TABLAS MOSTRADAS!\n-------------------------")
 			case opcion == 4:
 				sql.GenerarPKs()
 				sql.GenerarFKs()
-				fmt.Println("---------------------------\n ¡KEYS GENERADAS! \n-------------------------")
+				fmt.Println("---------------------------\n    ¡KEYS GENERADAS!\n-------------------------")
+			case opcion == 5:
+				sql.BorrarFKs()
+				sql.BorrarPKs()
+				fmt.Println("---------------------------\n    ¡KEYS BORRADAS!\n-------------------------")
+			
 			
 			default:
 				fmt.Println("Ingrese una opcion valida")
 			}
 	}
 }
-
