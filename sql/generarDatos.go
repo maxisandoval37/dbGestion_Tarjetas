@@ -43,26 +43,26 @@ func cargarClientes() { //FALTA CARGAR TELEFONOS
 }
 	
 func cargarComercios(){
-	 _ , err = db.Exec(`INSERT INTO comercio VALUES (95169,'Disco');
-						INSERT INTO comercio VALUES (29981,'Carrefour');
-						INSERT INTO comercio VALUES (82211,'Garbarino');
-						INSERT INTO comercio VALUES (79701,'Coto');
-						INSERT INTO comercio VALUES (21724,'Falabella');
-						INSERT INTO comercio VALUES (51249,'Grido Helado');
-						INSERT INTO comercio VALUES (87682,'Fravega');
-						INSERT INTO comercio VALUES (59460,'Sodimac');
-						INSERT INTO comercio VALUES (34039),'Panaderia y confiteria';
-						INSERT INTO comercio VALUES (32694),'';
-						INSERT INTO comercio VALUES (77289);
-						INSERT INTO comercio VALUES (68463);
-						INSERT INTO comercio VALUES (75374);
-						INSERT INTO comercio VALUES (79751);
-						INSERT INTO comercio VALUES (38833);
-						INSERT INTO comercio VALUES (68199);
-						INSERT INTO comercio VALUES (63129);
-						INSERT INTO comercio VALUES (90949);
-						INSERT INTO comercio VALUES (68806);
-						INSERT INTO comercio VALUES (61351);`)
+	 _ , err = db.Exec(`INSERT INTO comercio VALUES (95169,'Disco','Las Heras 716');
+						INSERT INTO comercio VALUES (29981,'Carrefour','Av T A Edison 555');
+						INSERT INTO comercio VALUES (82211,'Garbarino','Avenida 44 2049');
+						INSERT INTO comercio VALUES (79701,'Coto','Aberastain Sur 163');
+						INSERT INTO comercio VALUES (21724,'Falabella','Camargo 775');
+						INSERT INTO comercio VALUES (51249,'Grido Helado','H Yrigoyen 1659');
+						INSERT INTO comercio VALUES (87682,'Fravega','Tagle 3383');
+						INSERT INTO comercio VALUES (59460,'Sodimac','Av Entre Ríos 1072');
+						INSERT INTO comercio VALUES (34039,'Panaderia y confiteria','Av Colón 1012');
+						INSERT INTO comercio VALUES (32694,'Verduleria el tomate','Calle 55 3067');
+						INSERT INTO comercio VALUES (77289,'Fiambreria el gaucho','Acc Alte Brown 971');
+						INSERT INTO comercio VALUES (68463,'Panaderia el pan','C Melo 4708');
+						INSERT INTO comercio VALUES (75374,'Carniceria el carni','Brown 308');
+						INSERT INTO comercio VALUES (79751,'Panaderia maxi','Av R S Ortiz 160');
+						INSERT INTO comercio VALUES (38833,'Supermercado asia','Thompson 309');
+						INSERT INTO comercio VALUES (68199,'Compumundo','P Molina 133');
+						INSERT INTO comercio VALUES (63129,'Verduleria sandra','Bogotá 2842');
+						INSERT INTO comercio VALUES (90949,'Solo deportes','Garibaldi 155');
+						INSERT INTO comercio VALUES (68806,'Panaderia pan dulce','Chile 329');
+						INSERT INTO comercio VALUES (61351,'Fiambreria luna','Av L Quaranta 7091');`)
 		if err != nil {
 		log.Fatal(err)
 		}
