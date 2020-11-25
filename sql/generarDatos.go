@@ -1,12 +1,17 @@
 package sql
 
-
-
-func cargarDatos() {
+import (
 	
-	cargarClientes()
-	cargarComercios()
-	cargarTarjetas()
+	"log"
+)
+
+
+
+func CargarDatos() {
+	
+	CargarClientes()
+	CargarComercios()
+	//cargarTarjetas()
 	
 	
 	if err != nil {
@@ -15,8 +20,8 @@ func cargarDatos() {
 }
 
 
-func cargarClientes() { 
-	_ , err = db.Exec(` INSERT INTO cliente VALUES (81635249,'Juan','Perez','Corrientes 159','271542570123');
+func CargarClientes() { 
+	_, err = db.Exec(` INSERT INTO cliente VALUES (81635249,'Juan','Perez','Corrientes 159','271542570123');
 						INSERT INTO cliente VALUES (97824536,'Sergio','Denis','Av Lib San Martín 2130','307692152314');
 						INSERT INTO cliente VALUES (16495823,'Diego Armando','Maradona','Av Esteco 419','997410050001');
 						INSERT INTO cliente VALUES (87512694,'Alberto','Fernandez','Ocampo 248','279062550540');
@@ -42,7 +47,7 @@ func cargarClientes() {
 		}
 }
 	
-func cargarComercios(){
+func CargarComercios(){
 	 _ , err = db.Exec(`INSERT INTO comercio VALUES (95169,'Disco','Las Heras 716','29812595','872178944032');
 						INSERT INTO comercio VALUES (29981,'Carrefour','Av T A Edison 555','37466130','457755059512');
 						INSERT INTO comercio VALUES (82211,'Garbarino','Avenida 44 2049','39275046','625050693943');
@@ -69,33 +74,35 @@ func cargarComercios(){
 	
 }
 	
-func cargarTarjetas(){ //FALTA VERIFICAR SI EL FORMATO DE LA FECHA ESTA BIEN Y FALTA EL LIMITE DE COMPRA
-	_, err = db.Exec(`INSERT INTO tarjeta VALUES ('4382420954',81635249);
-						INSERT INTO tarjeta VALUES ('7836666357653320',97824536,'201106','201108','1817','vigente');
-						INSERT INTO tarjeta VALUES ('2732199710583851',16495823,'010503','010605','6701','vigente');
-						INSERT INTO tarjeta VALUES ('9530652367572720',87512694,'300105','020408','4728','anulada');
-						INSERT INTO tarjeta VALUES ('3695274119339368',58214936,'040510','230511','6423','vigente');
-						INSERT INTO tarjeta VALUES ('6294033816643938',87219364,'050311','200312','2473','suspendida');
-						INSERT INTO tarjeta VALUES ('6374432605814140',69254381,'020509','020510','3116','anulada');
-						INSERT INTO tarjeta VALUES ('7947654982802386',24318769,'110507','110509','8178','suspendida');
-						INSERT INTO tarjeta VALUES ('8743165676937175',67918245,'051107','051109','6915','vigente');
-						INSERT INTO tarjeta VALUES ('8174730839100196',15624837,'230110','240111','5206','suspendida');
-						INSERT INTO tarjeta VALUES ('4343577717377484',93527468,'111111','111212','8670','vigente');
-						INSERT INTO tarjeta VALUES ('6025188452991960',82974315,'020310','030412','4864','vigente');
-						INSERT INTO tarjeta VALUES ('3016480348260525',48129563,'041112','051113','4568','anulada');
-						INSERT INTO tarjeta VALUES ('9330693747869828',65317289,'030305','030408','5387','anulada');
-						INSERT INTO tarjeta VALUES ('9420306211523591',49815267,'110402','010403','6194','suspendida');
-						INSERT INTO tarjeta VALUES ('7229894669781604',51362874,'111102','121103','4894','vigente');
-						INSERT INTO tarjeta VALUES ('2155972533112753',83691452,'290405','290406','4310','suspendida');
-						INSERT INTO tarjeta VALUES ('6924033286851784',64723591,'110411','110412','8850','suspendida');
-						INSERT INTO tarjeta VALUES ('4486467155848418',93167854,'230110','230212','1054','vigente');
-						INSERT INTO tarjeta VALUES ('2779243321116675',84396721,'050311','050412','1778','anulada');
-						INSERT INTO tarjeta VALUES ('9184549155934952',93167854,'230110','230211','1218','vigente');
-						INSERT INTO tarjeta VALUES ('5333311040348954',84396721,'010503','010604','7991','anulada');`)
+func CargarTarjetas(){ //FALTA EL LIMITE DE COMPRA
+	_, err = db.Exec(`INSERT INTO tarjeta VALUES ('4382420954',81635249,'201205','201306','9184','vigente');
+						INSERT INTO tarjeta VALUES ('7836666357653320',97824536,'201106','201205','1817','vigente');
+						INSERT INTO tarjeta VALUES ('2732199710583851',16495823,'201804','202005','6701','vigente');
+						INSERT INTO tarjeta VALUES ('9530652367572720',87512694,'201905','202104','4728','anulada');
+						INSERT INTO tarjeta VALUES ('3695274119339368',58214936,'201611','201811','6423','vigente');
+						INSERT INTO tarjeta VALUES ('6294033816643938',87219364,'200903','201103','2473','vigente');
+						INSERT INTO tarjeta VALUES ('6374432605814140',69254381,'201012','201310','3116','anulada');
+						INSERT INTO tarjeta VALUES ('7947654982802386',24318769,'200806','201010','8178','suspendida');
+						INSERT INTO tarjeta VALUES ('8743165676937175',67918245,'200403','200504','6915','vigente');
+						INSERT INTO tarjeta VALUES ('8174730839100196',15624837,'201801','202001','5206','suspendida');
+						INSERT INTO tarjeta VALUES ('4343577717377484',93527468,'201410','201501','8670','vigente');
+						INSERT INTO tarjeta VALUES ('6025188452991960',82974315,'201305','201405','4864','vigente');
+						INSERT INTO tarjeta VALUES ('3016480348260525',48129563,'201601','201701','4568','anulada');
+						INSERT INTO tarjeta VALUES ('9330693747869828',65317289,'201004','201405','5387','vigente');
+						INSERT INTO tarjeta VALUES ('9420306211523591',49815267,'200712','200901','6194','suspendida');
+						INSERT INTO tarjeta VALUES ('7229894669781604',51362874,'200510','200701','4894','vigente');
+						INSERT INTO tarjeta VALUES ('2155972533112753',83691452,'201901','202301','4310','suspendida');
+						INSERT INTO tarjeta VALUES ('6924033286851784',64723591,'201703','202001','8850','vigente');
+						INSERT INTO tarjeta VALUES ('4486467155848418',93167854,'200501','200701','1054','vigente');
+						INSERT INTO tarjeta VALUES ('2779243321116675',84396721,'201503','201706','1778','vigente');
+						INSERT INTO tarjeta VALUES ('9184549155934952',93167854,'201801','201905','1218','vigente');
+						INSERT INTO tarjeta VALUES ('5333311040348954',84396721,'201608','201904','7991','anulada');`)
 		if err != nil {
 		log.Fatal(err)
 		}
 }
+
+
 
 
 

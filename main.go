@@ -21,6 +21,7 @@ func menuPrincipal() {
 			fmt.Println("3: Mostrar Tablas de la BD")
 			fmt.Println("4: Generar PKs y FKs")
 			fmt.Println("5: Borrar PKs y FKs")
+			fmt.Println("6: Cargar datos")
 			
 
 			fmt.Println("99: Salir ")
@@ -45,6 +46,9 @@ func menuPrincipal() {
 				sql.BorrarFKs()
 				sql.BorrarPKs()
 				fmt.Println("---------------------------\n    ¡KEYS BORRADAS!\n-------------------------")
+			case opcion == 6:
+				sql.CargarDatos()
+				fmt.Println("---------------------------\n    ¡DATOS CARGADOS!\n-------------------------")
 			
 			
 			default:
