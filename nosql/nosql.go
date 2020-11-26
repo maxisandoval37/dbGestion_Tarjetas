@@ -7,37 +7,48 @@ import (
 	bolt "github.com/coreos/bbolt"
 )
 
-type cliente struct {
-	nrocliente int
-	nombre     string
-	apellido   string
-	domicilio  string
-	telefono   string
+type Cliente struct {
+	Nrocliente int
+	Nombre     string
+	Apellido   string
+	Domicilio  string
+	Telefono   string
 }
 
-type tarjeta struct {
-	nrotarjeta   string
-	nrocliente   int
-	validadesde  string
-	validahasta  string
-	codseguridad string
-	limitecompra int
-	estado       string
+type Tarjeta struct {
+	Nrotarjeta   string
+	Nrocliente   int
+	Validadesde  string
+	Validahasta  string
+	Codseguridad string
+	Limitecompra int
+	Estado       string
 }
 
-type comercio struct {
-	nrocomercio  int
-	nombre       string
-	domicilio    string
-	codigopostal string
-	telefono     string
+type Comercio struct {
+	Nrocomercio  int
+	Nombre       string
+	Domicilio    string
+	Codigopostal string
+	Telefono     string
 }
 
-type compra struct {
-	nrooperacion int
-	nrotarjeta   string
-	nrocomercio  int
-	fecha        string
-	monto        int
-	pagado       bool
+type Compra struct {
+	Nrooperacion int
+	Nrotarjeta   string
+	Nrocomercio  int
+	Fecha        string
+	Monto        int
+	Pagado       bool
+}
+
+var boltdb *bolt.DB
+var err error
+
+func dbConnection() {
+	boltdb, err = bolt.Open("./no-sql/bolt_database/algo.db", 0600, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
 }
