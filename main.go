@@ -22,6 +22,7 @@ func menuPrincipal() {
 			fmt.Println("4: Generar PKs y FKs")
 			fmt.Println("5: Borrar PKs y FKs")
 			fmt.Println("6: Cargar datos")
+			fmt.Println("7: Mostrar Todos Datos Cargados")
 			
 
 			fmt.Println("99: Salir ")
@@ -49,6 +50,9 @@ func menuPrincipal() {
 			case opcion == 6:
 				sql.CargarDatos()
 				fmt.Println("---------------------------\n    ¡DATOS CARGADOS!\n-------------------------")
+			case opcion == 7:
+				sql.MostrarTodosDatos()
+				fmt.Println("---------------------------\n    ¡DATOS MOSTRADOS!\n-------------------------")
 			
 			
 			default:
