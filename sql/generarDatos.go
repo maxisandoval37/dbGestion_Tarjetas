@@ -1,11 +1,8 @@
 package sql
 
 import (
-	
 	"log"
 )
-
-
 
 func CargarDatos() {
 	
@@ -43,39 +40,39 @@ func CargarClientes() {
 						INSERT INTO cliente VALUES (84396721,'Martina','Botero','M De Alzaga 3972','654507732034');`)
 						
 		if err != nil {
-		log.Fatal(err)
+			log.Fatal(err)
 		}
 }
 	
 func CargarComercios(){
-	 _ , err = db.Exec(`INSERT INTO comercio VALUES (95169,'Disco','Las Heras 716','29812595','872178944032');
-						INSERT INTO comercio VALUES (29981,'Carrefour','Av T A Edison 555','37466130','457755059512');
-						INSERT INTO comercio VALUES (82211,'Garbarino','Avenida 44 2049','39275046','625050693943');
-						INSERT INTO comercio VALUES (79701,'Coto','Aberastain Sur 163','60991299','709777835612');
-						INSERT INTO comercio VALUES (21724,'Falabella','Camargo 775','57347558','138988075243');
-						INSERT INTO comercio VALUES (51249,'Grido Helado','H Yrigoyen 1659','30179225','361518160053');
-						INSERT INTO comercio VALUES (87682,'Fravega','Tagle 3383','68627468','925173628765');
-						INSERT INTO comercio VALUES (59460,'Sodimac','Av Entre Ríos 1072','87860378','915082365243');
-						INSERT INTO comercio VALUES (34039,'Panaderia y confiteria','Av Colón 1012','43369535','634483423800');
-						INSERT INTO comercio VALUES (32694,'Verduleria el tomate','Calle 55 3067','49628779','713519136410');
-						INSERT INTO comercio VALUES (77289,'Fiambreria el gaucho','Acc Alte Brown 971','17473237','726870604311');
-						INSERT INTO comercio VALUES (68463,'Panaderia el pan','C Melo 4708','48005807','988294290165');
-						INSERT INTO comercio VALUES (75374,'Carniceria el carni','Brown 308','51589936','284719172711');
-						INSERT INTO comercio VALUES (79751,'Panaderia maxi','Av R S Ortiz 160','83138226','267532588765');
-						INSERT INTO comercio VALUES (38833,'Supermercado asia','Thompson 309','32787317','777139421953');
-						INSERT INTO comercio VALUES (68199,'Compumundo','P Molina 133','74727863','6708988871');
-						INSERT INTO comercio VALUES (63129,'Verduleria sandra','Bogotá 2842','39276629','292802798211');
-						INSERT INTO comercio VALUES (90949,'Solo deportes','Garibaldi 155','36548082','333826274011');
-						INSERT INTO comercio VALUES (68806,'Panaderia pan dulce','Chile 329','87303986','946007831954');
-						INSERT INTO comercio VALUES (61351,'Fiambreria luna','Av L Quaranta 7091','46863583','339534886414');`)
+	 _ , err = db.Exec(`INSERT INTO comercio VALUES (95169,'Disco','Las Heras 716','A9812CAV','872178944032');
+						INSERT INTO comercio VALUES (29981,'Carrefour','Av T A Edison 555','B7466EWR','457755059512');
+						INSERT INTO comercio VALUES (82211,'Garbarino','Avenida 44 2049','C9275CVB','625050693943');
+						INSERT INTO comercio VALUES (79701,'Coto','Aberastain Sur 163','D0991LKJ','709777835612');
+						INSERT INTO comercio VALUES (21724,'Falabella','Camargo 775','E7347CVF','138988075243');
+						INSERT INTO comercio VALUES (51249,'Grido Helado','H Yrigoyen 1659','E0179VAG','361518160053');
+						INSERT INTO comercio VALUES (87682,'Fravega','Tagle 3383','F8627MAX','925173628765');
+						INSERT INTO comercio VALUES (59460,'Sodimac','Av Entre Ríos 1072','G7860TOM','915082365243');
+						INSERT INTO comercio VALUES (34039,'Panaderia y confiteria','Av Colón 1012','H3369LUN','634483423800');
+						INSERT INTO comercio VALUES (32694,'Verduleria el tomate','Calle 55 3067','I9628VBF','713519136410');
+						INSERT INTO comercio VALUES (77289,'Fiambreria el gaucho','Acc Alte Brown 971','J7473HEG','726870604311');
+						INSERT INTO comercio VALUES (68463,'Panaderia el pan','C Melo 4708','K8005LVB','988294290165');
+						INSERT INTO comercio VALUES (75374,'Carniceria el carni','Brown 308','L1589MCB','284719172711');
+						INSERT INTO comercio VALUES (79751,'Panaderia maxi','Av R S Ortiz 160','M3138MMM','267532588765');
+						INSERT INTO comercio VALUES (38833,'Supermercado asia','Thompson 309','O2787AAA','777139421953');
+						INSERT INTO comercio VALUES (68199,'Compumundo','P Molina 133','P4724PMJ','670898887134');
+						INSERT INTO comercio VALUES (63129,'Verduleria sandra','Bogotá 2842','Q9276KMK','292802798211');
+						INSERT INTO comercio VALUES (90949,'Solo deportes','Garibaldi 155','R6548CXV','333826274011');
+						INSERT INTO comercio VALUES (68806,'Panaderia pan dulce','Chile 329','S7303BXE','946007831954');
+						INSERT INTO comercio VALUES (61351,'Fiambreria luna','Av L Quaranta 7091','T6863CSD','339534886414');`)
 		if err != nil {
-		log.Fatal(err)
+			log.Fatal(err)
 		}
 	
 }
 	
-func CargarTarjetas(){ //total cant decimales
-	_, err = db.Exec(`INSERT INTO tarjeta VALUES ('4382420954',81635249,'201205','201306','9184',50000,'vigente');
+func CargarTarjetas(){ //decimal(t,c) total-cant decimales
+	_, err = db.Exec(`INSERT INTO tarjeta VALUES ('4382420954',81635249,'201205','201306','9184',50,'vigente');
 						INSERT INTO tarjeta VALUES ('7836666357653320',97824536,'201106','201205','1817',40000,'vigente');
 						INSERT INTO tarjeta VALUES ('2732199710583851',16495823,'201804','202005','6701',450000,'vigente');
 						INSERT INTO tarjeta VALUES ('9530652367572720',87512694,'201905','202104','4728',7000000,'anulada');
@@ -94,18 +91,16 @@ func CargarTarjetas(){ //total cant decimales
 						INSERT INTO tarjeta VALUES ('2155972533112753',83691452,'201901','202301','4310',200000,'suspendida');
 						INSERT INTO tarjeta VALUES ('6924033286851784',64723591,'201703','202001','8850',145000,'vigente');
 						INSERT INTO tarjeta VALUES ('4486467155848418',93167854,'200501','200701','1054',500000,'vigente');
-						INSERT INTO tarjeta VALUES ('2779243321116675',84396721,'201503','201706','1778',7000000,'vigente');
 						INSERT INTO tarjeta VALUES ('9184549155934952',93167854,'201801','201905','1218',32500,'vigente');
+						INSERT INTO tarjeta VALUES ('2779243321116675',84396721,'201503','201706','1778',7000000,'vigente');
 						INSERT INTO tarjeta VALUES ('5333311040348954',84396721,'201608','201904','7991',50000,'anulada');`)
 		if err != nil {
-		log.Fatal(err)
+			log.Fatal(err)
 		}
 }
 
-
-
-
-
-
+						
+//Cliente 84396721 tiene dos tarjetas
+//Cliente 93167854 tiene dos tarjetas
 
 
