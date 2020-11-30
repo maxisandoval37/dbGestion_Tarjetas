@@ -53,6 +53,23 @@ func dbConnection() {
 	//defer db.Close()
 }
 
+func CargaDatosNoDB() {
+	dbConnection()
+
+	cargarCliente(81635249, "Juan", "Perez", "Corrientes 159", "271542570123")
+	cargarCliente(51362874, "Nahuel", "Rodriguez", "Calle 24 1235", "284529192033")
+	cargarCliente(64723591, "Matias Adrian", "Perez", "Río Cuarto 2020", "221651370676")
+
+	cargarTarjeta("4382420954476737", 81635249, "201205", "201306", "9184", 50, "vigente")
+	cargarTarjeta("7229894669781604", 51362874, "200510", "200701", "4894", 10, "vigente")
+	cargarTarjeta("6924033286851784", 64723591, "201703", "202001", "8850", 14, "vigente")
+
+	cargarComercio(61351, "Fiambreria luna", "Av L Quaranta 7091", "T6863CSD", "339534886414")
+	cargarComercio(79751, "Panaderia maxi", "Av R S Ortiz 160", "M3138MMM", "267532588765")
+	cargarComercio(51249, "Grido Helado", "H Yrigoyen 1659", "E0179VAG", "361518160053")
+
+}
+
 func cargarCliente(nro_cliente int, nombre string, apellido string, domicilio string, telefono string) {
 	cliente := Cliente{nro_cliente, nombre, apellido, domicilio, telefono}
 	data, err := json.Marshal(cliente)

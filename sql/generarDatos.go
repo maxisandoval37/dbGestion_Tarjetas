@@ -54,17 +54,17 @@ func CargarComercios(){
 						INSERT INTO comercio VALUES (87682,'Fravega','Tagle 3383','F8627MAX','925173628765');
 						INSERT INTO comercio VALUES (59460,'Sodimac','Av Entre Ríos 1072','G7860TOM','915082365243');
 						INSERT INTO comercio VALUES (34039,'Panaderia y confiteria','Av Colón 1012','H3369LUN','634483423800');
-						INSERT INTO comercio VALUES (32694,'Verduleria el tomate','Calle 55 3067','I9628VBF','713519136410');
+						INSERT INTO comercio VALUES (32694,'Montenegro: Verduleria y Ferreteria','Calle 55 3067','I9628VBF','713519136410');
 						INSERT INTO comercio VALUES (77289,'Fiambreria el gaucho','Acc Alte Brown 971','J7473HEG','726870604311');
 						INSERT INTO comercio VALUES (68463,'Panaderia el pan','C Melo 4708','K8005LVB','988294290165');
-						INSERT INTO comercio VALUES (75374,'Carniceria el carni','Brown 308','L1589MCB','284719172711');
-						INSERT INTO comercio VALUES (79751,'Panaderia maxi','Av R S Ortiz 160','M3138MMM','267532588765');
+						INSERT INTO comercio VALUES (75374,'Carniceria El Horacio','Brown 308','L1589MCB','284719172711');
+						INSERT INTO comercio VALUES (79751,'Panaderia Maxi','Av R S Ortiz 160','M3138MMM','267532588765');
 						INSERT INTO comercio VALUES (38833,'Supermercado asia','Thompson 309','O2787AAA','777139421953');
 						INSERT INTO comercio VALUES (68199,'Compumundo','P Molina 133','P4724PMJ','670898887134');
-						INSERT INTO comercio VALUES (63129,'Verduleria sandra','Bogotá 2842','Q9276KMK','292802798211');
+						INSERT INTO comercio VALUES (63129,'Verduleria Sandra','Bogotá 2842','Q9276KMK','292802798211');
 						INSERT INTO comercio VALUES (90949,'Solo deportes','Garibaldi 155','R6548CXV','333826274011');
 						INSERT INTO comercio VALUES (68806,'Panaderia pan dulce','Chile 329','S7303BXE','946007831954');
-						INSERT INTO comercio VALUES (61351,'Fiambreria luna','Av L Quaranta 7091','T6863CSD','339534886414');`)
+						INSERT INTO comercio VALUES (61351,'Fiambreria Luna','Av L Quaranta 7091','T6863CSD','339534886414');`)
 		if err != nil {
 			log.Fatal(err)
 		}
