@@ -68,6 +68,15 @@ func CargaDatosNoDB() {
 	cargarComercio(79751, "Panaderia maxi", "Av R S Ortiz 160", "M3138MMM", "267532588765")
 	cargarComercio(51249, "Grido Helado", "H Yrigoyen 1659", "E0179VAG", "361518160053")
 
+	cargarCompra(1, "4382420954476737", 61351, "2020-04-25 17:50:42", 1230.00, true)
+	cargarCompra(2, "4382420954476737", 79751, "2020-04-25 18:30:12", 800.00, true)
+	cargarCompra(3, "4382420954476737", 51249, "2020-05-01 16:03:33", 500.00, true)
+	cargarCompra(4, "7229894669781604", 61351, "2020-05-02 16:30:02", 700.00, true)
+	cargarCompra(5, "7229894669781604", 79751, "2020-05-02 17:22:29", 5000.00, true)
+	cargarCompra(6, "7229894669781604", 51249, "2020-05-02 17:59:13", 950.00, true)
+	cargarCompra(7, "6924033286851784", 61351, "2020-05-03 09:42:59", 68.99, true)
+	cargarCompra(8, "6924033286851784", 51249, "2020-05-04 03:10:01", 8000.00, false)
+	cargarCompra(9, "6924033286851784", 51249, "2020-05-04 03:25:34", 8000.00, false)
 }
 
 func cargarCliente(nro_cliente int, nombre string, apellido string, domicilio string, telefono string) {
@@ -132,18 +141,3 @@ func CreateUpdate(db *bolt.DB, bucketName string, key []byte, val []byte) error 
 
     return nil
 }
-
-func CargarDatos_nosql() {
-	dbConnection()
-
-	//cargarCliente()
-	//cargarTarjeta()
-	//cargarComercio()
-	//cargarCompra()
-
-	// tres de cada entidad segun el enunciado
-}
-
-
-
-
