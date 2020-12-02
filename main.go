@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"./sql"
+	"./nosql"
 )
 
 func main() {
@@ -24,6 +25,7 @@ func menuPrincipal() {
 			fmt.Println("6: Cargar datos")
 			fmt.Println("7: Mostrar Todos Datos Cargados")
 			
+			fmt.Println("9: CargarDatosNoSQL en BoltDB")
 
 			fmt.Println("99: Salir ")
 
@@ -53,8 +55,9 @@ func menuPrincipal() {
 			case opcion == 7:
 				sql.MostrarTodosDatos()
 				fmt.Println("---------------------------\n    ¡DATOS MOSTRADOS!\n-------------------------")
-			
-			
+			case opcion == 9:
+				nosql.CargaDatosNoDB()
+				fmt.Println("---------------------------\n    ¡DATOS NOSQL CARGADOS!\n-------------------------")
 			default:
 				fmt.Println("Ingrese una opcion valida")
 			}
