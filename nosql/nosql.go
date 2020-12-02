@@ -5,6 +5,7 @@ import (
 	"log"
 	"strconv"
 	bolt "github.com/coreos/bbolt"
+	"fmt"
 )
 
 type Cliente struct {
