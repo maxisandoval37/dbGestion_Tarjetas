@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"./sql"
-	"./nosql"
+	nosql "./nosql"
 )
 
 func main() {

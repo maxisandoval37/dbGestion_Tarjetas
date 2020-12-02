@@ -5,7 +5,7 @@ import (
 	"log"
 	"strconv"
 	bolt "github.com/coreos/bbolt"
-	"fmt"
+	// "fmt"
 )
 
 type Cliente struct {
@@ -47,11 +47,11 @@ var boltdb *bolt.DB
 var err error
 
 func dbConnection() {
-	boltdb, err = bolt.Open("./no-sql/bolt_database/algo.db", 0600, nil)
+	boltdb, err = bolt.Open(".\no-sql\bolt_database\algo.db", 0600, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	//defer db.Close()
+	
 }
 
 func CargaDatosNoDB() {
@@ -89,11 +89,11 @@ func cargarCliente(nro_cliente int, nombre string, apellido string, domicilio st
 
 	CreateUpdate(boltdb, "Cliente", []byte(strconv.Itoa(cliente.Nrocliente)), data)
 
-	resultado, err := ReadUnique(boltdb, "Cliente", []byte(strconv.Itoa(cliente.Nrocliente)))
-	if err != nil {
-		log.Fatal(err)
-	}
-    fmt.Printf("%s\n", resultado)
+	//resultado, err := ReadUnique(boltdb, "Cliente", []byte(strconv.Itoa(cliente.Nrocliente)))
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+    //fmt.Printf("%s\n", resultado)
 }
 
 func cargarTarjeta(nro_tarjeta string, nro_cliente int, valida_desde string, valida_hasta string, codigo_seguridad string, limite_compra int, estado string) {
@@ -105,11 +105,11 @@ func cargarTarjeta(nro_tarjeta string, nro_cliente int, valida_desde string, val
 
 	CreateUpdate(boltdb, "Tarjeta", []byte(strconv.Itoa(tarjeta.Nrocliente)), data)
 
-	resultado, err := ReadUnique(boltdb, "Tarjeta", []byte(strconv.Itoa(tarjeta.Nrocliente)))
-	if err != nil {
-		log.Fatal(err)
-	}
-    fmt.Printf("%s\n", resultado)
+	//resultado, err := ReadUnique(boltdb, "Tarjeta", []byte(strconv.Itoa(tarjeta.Nrocliente)))
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+    //fmt.Printf("%s\n", resultado)
 }
 
 func cargarComercio(nro_comercio int, nombre string, domicilio string, codigo_postal string, telefono string) {
@@ -121,11 +121,11 @@ func cargarComercio(nro_comercio int, nombre string, domicilio string, codigo_po
 
 	CreateUpdate(boltdb, "Comercio", []byte(strconv.Itoa(comercio.Nrocomercio)), data)
 	
-	resultado, err := ReadUnique(boltdb, "Comercio", []byte(strconv.Itoa(comercio.Nrocomercio)))
-	if err != nil {
-		log.Fatal(err)
-	}
-    fmt.Printf("%s\n", resultado)
+	//resultado, err := ReadUnique(boltdb, "Comercio", []byte(strconv.Itoa(comercio.Nrocomercio)))
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+    //fmt.Printf("%s\n", resultado)
 }
 
 func cargarCompra(nro_operacion int, nro_tarjeta string, nro_comercio int, fecha string, monto int, pagado bool) {
@@ -137,11 +137,11 @@ func cargarCompra(nro_operacion int, nro_tarjeta string, nro_comercio int, fecha
 
 	CreateUpdate(boltdb, "Compra", []byte(strconv.Itoa(compra.Nrooperacion)), data)
 	
-	resultado, err := ReadUnique(boltdb, "Compra", []byte(strconv.Itoa(compra.Nrooperacion)))
-	if err != nil {
-		log.Fatal(err)
-	}
-    fmt.Printf("%s\n", resultado)
+	//resultado, err := ReadUnique(boltdb, "Compra", []byte(strconv.Itoa(compra.Nrooperacion)))
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+    //fmt.Printf("%s\n", resultado)
 }
 
 func CreateUpdate(db *bolt.DB, bucketName string, key []byte, val []byte) error {
