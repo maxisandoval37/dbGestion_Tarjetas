@@ -74,7 +74,7 @@ func CargaDatosNoDB() {
 	cargarCompra(4, "7229894669781604", 61351, "2020-05-02 16:30:02", 700.00, true)
 	cargarCompra(5, "7229894669781604", 79751, "2020-05-02 17:22:29", 5000.00, true)
 	cargarCompra(6, "7229894669781604", 51249, "2020-05-02 17:59:13", 950.00, true)
-	cargarCompra(7, "6924033286851784", 61351, "2020-05-03 09:42:59", 68.99, true)
+	cargarCompra(7, "6924033286851784", 61351, "2020-05-03 09:42:59", 68.00, true)
 	cargarCompra(8, "6924033286851784", 51249, "2020-05-04 03:10:01", 8000.00, false)
 	cargarCompra(9, "6924033286851784", 51249, "2020-05-04 03:25:34", 8000.00, false)
 }
@@ -86,7 +86,7 @@ func cargarCliente(nro_cliente int, nombre string, apellido string, domicilio st
 		log.Fatal(err)
 	}
 
-	CreateUpdate(db, "Cliente", []byte(strconv.Itoa(cliente.Nrocliente)), data)
+	CreateUpdate(boltdb, "Cliente", []byte(strconv.Itoa(cliente.Nrocliente)), data)
 }
 
 func cargarTarjeta(nro_tarjeta string, nro_cliente int, valida_desde string, valida_hasta string, codigo_seguridad string, limite_compra int, estado string) {
@@ -96,7 +96,7 @@ func cargarTarjeta(nro_tarjeta string, nro_cliente int, valida_desde string, val
 		log.Fatal(err)
 	}
 
-	CreateUpdate(db, "Tarjeta", []byte(strconv.Itoa(tarjeta.Nrocliente)), data)
+	CreateUpdate(boltdb, "Tarjeta", []byte(strconv.Itoa(tarjeta.Nrocliente)), data)
 }
 
 func cargarComercio(nro_comercio int, nombre string, domicilio string, codigo_postal string, telefono string) {
@@ -106,7 +106,7 @@ func cargarComercio(nro_comercio int, nombre string, domicilio string, codigo_po
 		log.Fatal(err)
 	}
 
-	CreateUpdate(db, "Comercio", []byte(strconv.Itoa(comercio.Nrocomercio)), data)
+	CreateUpdate(boltdb, "Comercio", []byte(strconv.Itoa(comercio.Nrocomercio)), data)
 }
 
 func cargarCompra(nro_operacion int, nro_tarjeta string, nro_comercio int, fecha string, monto int, pagado bool) {
@@ -116,12 +116,12 @@ func cargarCompra(nro_operacion int, nro_tarjeta string, nro_comercio int, fecha
 		log.Fatal(err)
 	}
 
-	CreateUpdate(db, "Compra", []byte(strconv.Itoa(compra.Nrooperacion)), data)
+	CreateUpdate(boltdb, "Compra", []byte(strconv.Itoa(compra.Nrooperacion)), data)
 }
 
 func CreateUpdate(db *bolt.DB, bucketName string, key []byte, val []byte) error {
     // abre transacción de escritura
-    tx, err := db.Begin(true)
+    tx, err := boltdb.Begin(true)
     if err != nil {
         return err
     }
