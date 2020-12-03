@@ -2,7 +2,6 @@ package sql
 
 import (
 	"log"
-	"strconv"
 )
 
 func spAutorizarCompra() {	
@@ -14,7 +13,7 @@ func spAutorizarCompra() {
 			montoMaximo decimal(8,2);
 			fechaVenceTarjeta int;
 			fechaVence date;
-			nrooperacion int
+			nrooperacion int;
 		 BEGIN
 			SELECT INTO nrooperacion COUNT(*) FROM compra;
 			INSERT INTO compra(nrooperacion,nrotarjeta, nrocomercio, fecha, monto, pagado) VALUES(nrooperacion,_nrotarjeta, _nrocomercio, current_timestamp, _monto,False);
@@ -22,20 +21,18 @@ func spAutorizarCompra() {
 		END;
 	$$ LANGUAGE PLPGSQL;`)
 	
-	auxnrOperacion=auxnrOperacion+1;
-	
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-
-func spAgregarConsumoTESTaux() {
+func spAgregarConsumoTESTaux(nrotarjeta string, codseg string, nrocomer string, monto string) {
 	_, err = db.Query(
 		`CREATE OR REPLACE FUNCTION agregar_consumo() returns void as $$
 		BEGIN
-			PERFORM autorizarcompra( CAST(4382420954476737 as char(16)), CAST(9184 as char(4)), CAST(95169 as int), CAST(1000.00 as decimal(7,2)) );
-			--PERFORM autorizarcompra( CAST(`+4382420954476737+` as char(16)), CAST(`+codseg+` as char(4)), CAST(`+nrocomer+` as int), CAST(`+monto+` as decimal(7,2)) );
+		
+		PERFORM autorizarcompra( CAST(`+nrotarjeta+` as char(16)), CAST(`+codseg+` as char(4)), CAST(`+nrocomer+` as int), CAST(`+monto+` as decimal(7,2)) );
+		--return new;
 		END;
 
 	$$ LANGUAGE PLPGSQL;`)
@@ -47,7 +44,7 @@ func spAgregarConsumoTESTaux() {
 func AgregarConsumo(){
 	spAutorizarCompra()
 	spAgregarRechazo()
-	spAgregarConsumoTESTaux()  //"4382420954476737","9184","95169","10")//valido
+	spAgregarConsumoTESTaux("4382420954476737","9184","95169","10")//valido
 }
 
 func spAgregarRechazo() {
