@@ -28,6 +28,8 @@ func menuPrincipal() {
 			fmt.Println("7: Mostrar Todos Datos Cargados")
 			fmt.Println("8: Generar Cierres")
 			fmt.Println("9: Agregar Consumos")
+			fmt.Println("97: Generar Resumenes")
+			
 			
 			
 			fmt.Println("98: CargarDatosNoSQL en BoltDB")
@@ -69,6 +71,9 @@ func menuPrincipal() {
 			case opcion == 98:
 				nosql.CargaDatosNoDB()
 				fmt.Println("---------------------------\n    ¡DATOS NOSQL CARGADOS!\n-------------------------")
+			case opcion == 97:
+				sql.GenerarResumen()
+				fmt.Println("---------------------------\n    ¡RESUMENES GENERADOS!\n-------------------------")
 			default:
 				fmt.Println("Ingrese una opcion valida")
 			}
