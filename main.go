@@ -16,7 +16,9 @@ var opcion int=0
 func menuPrincipal() {
 
 		for opcion != 99 {
+			fmt.Println("------------------")
 			fmt.Println("Digite una opcion")
+			fmt.Println("------------------")
 			fmt.Println("1: Crear BD SQL")
 			fmt.Println("2: Crear Tablas")
 			fmt.Println("3: Mostrar Tablas de la BD")
@@ -24,8 +26,11 @@ func menuPrincipal() {
 			fmt.Println("5: Borrar PKs y FKs")
 			fmt.Println("6: Cargar datos")
 			fmt.Println("7: Mostrar Todos Datos Cargados")
+			fmt.Println("8: Generar Cierres")
+			fmt.Println("9: Agregar Consumos")
 			
-			fmt.Println("9: CargarDatosNoSQL en BoltDB")
+			
+			fmt.Println("98: CargarDatosNoSQL en BoltDB")
 
 			fmt.Println("99: Salir ")
 
@@ -55,7 +60,13 @@ func menuPrincipal() {
 			case opcion == 7:
 				sql.MostrarTodosDatos()
 				fmt.Println("---------------------------\n    ¡DATOS MOSTRADOS!\n-------------------------")
+			case opcion == 8:
+				sql.SpGenerarCierres()
+				fmt.Println("---------------------------\n    ¡DATOS CIERRES GENERADOS\n-------------------------")
 			case opcion == 9:
+				sql.AgregarConsumo()
+				fmt.Println("---------------------------\n    ¡CONSUMOS AGREGADOS!\n-------------------------")
+			case opcion == 98:
 				nosql.CargaDatosNoDB()
 				fmt.Println("---------------------------\n    ¡DATOS NOSQL CARGADOS!\n-------------------------")
 			default:
