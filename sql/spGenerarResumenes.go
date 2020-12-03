@@ -1,8 +1,8 @@
 package sql
 
-import {
+import (
 	"log"
-}
+)
 
 func generarResumen(){
 	_, err = db.Query(`create function generarResumen(cliente int, anio int,mes int )) returns bool as $$
@@ -83,17 +83,5 @@ func generarResumen(){
 		if err != nil {
 			log.Fatal(err)
 		}
-
-		
-
-					
-					
-
-				
-				
-
-
-
-
 
 }
