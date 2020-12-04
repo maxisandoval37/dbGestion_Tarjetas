@@ -69,14 +69,12 @@ $$ language plpgsql;`)
 
 func AutorizarCompra() {
 		var c consumoObj
-		var r bool
 	
 		row, err := db.Query(`select * from consumo`)
 		
 		if err != nil {
 			log.Fatal(err)
 		}
-		
 		defer row.Close()
 		
 
@@ -84,26 +82,16 @@ func AutorizarCompra() {
 			if err = row.Scan(&c.nrotarjeta, &c.codseguridad, &c.nrocomercio, &c.monto); err != nil {	
 				log.Fatal(err)
 			}
-		}
-		
-		row, err = db.Query(`select autorizar_compra($1::char(16), $2::char(4), $3::int, $4::decimal(7,2));`, c.nrotarjeta, c.codseguridad, c.nrocomercio, c.monto)
-		if err != nil {
-			log.Fatal(err)
-		}
-		
-		for row.Next() {
-			if err = row.Scan(&r); err != nil {
+			
+			_, err = db.Query(`select autorizar_compra($1::char(16), $2::char(4), $3::int, $4::decimal(7,2));`, c.nrotarjeta, c.codseguridad, c.nrocomercio, c.monto)
+			if err != nil {
 				log.Fatal(err)
 			}
 		}
 		
-		if err != nil {
-			log.Fatal(err)
-		}
 }
 
 func TestConsumo(){
 	spAutorizarCompra()
 	AutorizarCompra()
 }
-
