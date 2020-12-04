@@ -6,19 +6,16 @@ import (
 
 func spAutorizarCompra() {	
 	_, err = db.Query(
-		`
-		CREATE OR REPLACE FUNCTION autorizarcompra(_nrotarjeta char(16), _codseguridad char(4), _nrocomercio int, _monto decimal(7,2)) returns bool as $$
+		`CREATE OR REPLACE FUNCTION autorizarcompra(_nrotarjeta char(16), _codseguridad char(4), _nrocomercio int, _monto decimal(7,2)) returns bool as $$
 		 DECLARE
 			totalPendiente decimal(8,2);
 			montoMaximo decimal(8,2);
 			fechaVenceTarjeta int;
 			fechaVence date;
-			nrooperacion int;
 		 BEGIN
-			SELECT INTO nrooperacion COUNT(*) FROM compra;
-			INSERT INTO compra(nrooperacion,nrotarjeta, nrocomercio, fecha, monto, pagado) VALUES(nrooperacion,_nrotarjeta, _nrocomercio, current_timestamp, _monto,False);
+			INSERT INTO compra(nrotarjeta, nrocomercio, fecha, monto, pagado) VALUES(_nrotarjeta, _nrocomercio, current_timestamp, _monto,False);
 			return True;
-		END;
+		 END;
 	$$ LANGUAGE PLPGSQL;`)
 	
 	if err != nil {
@@ -29,12 +26,11 @@ func spAutorizarCompra() {
 func spAgregarConsumoTESTaux(nrotarjeta string, codseg string, nrocomer string, monto string) {
 	_, err = db.Query(
 		`CREATE OR REPLACE FUNCTION agregar_consumo() returns void as $$
-		BEGIN
+		 BEGIN
 		
-		PERFORM autorizarcompra( CAST(`+nrotarjeta+` as char(16)), CAST(`+codseg+` as char(4)), CAST(`+nrocomer+` as int), CAST(`+monto+` as decimal(7,2)) );
-		--return new;
-		END;
-
+		 PERFORM autorizarcompra( CAST(`+nrotarjeta+` as char(16)), CAST(`+codseg+` as char(4)), CAST(`+nrocomer+` as int), CAST(`+monto+` as decimal(7,2)) );
+		 --return new;
+		 END;
 	$$ LANGUAGE PLPGSQL;`)
 	if err != nil {
 		log.Fatal(err)
