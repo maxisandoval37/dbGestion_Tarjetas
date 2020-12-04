@@ -47,33 +47,33 @@ func menuPrincipal() {
 				fmt.Println("------------------------\n    ¡TABLAS CREADAS!\n------------------------")
 			case opcion == 3:
 				sql.MostrarTablas()
-				fmt.Println("---------------------------\n    ¡TABLAS MOSTRADAS!\n-------------------------")
+				fmt.Println("-----------------------\n    ¡TABLAS MOSTRADAS!\n-----------------------")
 			case opcion == 4:
 				sql.GenerarPKs()
 				sql.GenerarFKs()
-				fmt.Println("---------------------------\n    ¡KEYS GENERADAS!\n-------------------------")
+				fmt.Println("-----------------------\n    ¡KEYS GENERADAS!\n-----------------------")
 			case opcion == 5:
 				sql.BorrarFKs()
 				sql.BorrarPKs()
-				fmt.Println("---------------------------\n    ¡KEYS BORRADAS!\n-------------------------")
+				fmt.Println("-----------------------\n    ¡KEYS BORRADAS!\n----------------------")
 			case opcion == 6:
 				sql.CargarDatos()
-				fmt.Println("---------------------------\n    ¡DATOS CARGADOS!\n-------------------------")
+				fmt.Println("-----------------------\n    ¡DATOS CARGADOS!\n-----------------------")
 			case opcion == 7:
 				sql.MostrarTodosDatos()
 				fmt.Println("---------------------------\n    ¡DATOS MOSTRADOS!\n-------------------------")
 			case opcion == 8:
 				sql.SpGenerarCierres()
-				fmt.Println("---------------------------\n    ¡DATOS CIERRES GENERADOS\n-------------------------")
+				fmt.Println("---------------------------\n    ¡DATOS CIERRES GENERADOS\n---------------------------")
 			case opcion == 9:
-				sql.AgregarConsumo()
-				fmt.Println("---------------------------\n    ¡CONSUMOS AGREGADOS!\n-------------------------")
+				sql.TestConsumo()
+				fmt.Println("-----------------------------------------\n    ¡CONSUMOS AGREGADOS Y GESTIONADOS!\n-----------------------------------------")
 			case opcion == 98:
 				nosql.CargaDatosNoDB()
-				fmt.Println("---------------------------\n    ¡DATOS NOSQL CARGADOS!\n-------------------------")
+				fmt.Println("---------------------------\n    ¡DATOS NOSQL CARGADOS!\n---------------------------")
 			case opcion == 97:
 				sql.GenerarResumen()
-				fmt.Println("---------------------------\n    ¡RESUMENES GENERADOS!\n-------------------------")
+				fmt.Println("---------------------------\n    ¡RESUMENES GENERADOS!\n---------------------------")
 			default:
 				fmt.Println("Ingrese una opcion valida")
 			}

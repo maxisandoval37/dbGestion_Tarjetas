@@ -6,10 +6,10 @@ import (
 
 func CargarDatos() {
 	
-	CargarClientes()
-	CargarComercios()
-	CargarTarjetas()
-	
+	cargarClientes()
+	cargarComercios()
+	cargarTarjetas()
+	cargarConsumos()
 	
 	if err != nil {
 		log.Fatal(err)
@@ -17,7 +17,7 @@ func CargarDatos() {
 }
 
 
-func CargarClientes() { 
+func cargarClientes() { 
 	_, err = db.Exec(` INSERT INTO cliente VALUES (81635249,'Juan','Perez','Corrientes 159','271542570123');
 						INSERT INTO cliente VALUES (97824536,'Sergio','Denis','Av Lib San Martín 2130','307692152314');
 						INSERT INTO cliente VALUES (16495823,'Diego Armando','Maradona','Av Esteco 419','997410050001');
@@ -44,7 +44,7 @@ func CargarClientes() {
 		}
 }
 	
-func CargarComercios(){
+func cargarComercios(){
 	 _ , err = db.Exec(`INSERT INTO comercio VALUES (95169,'Disco','Las Heras 716','A9812CAV','872178944032');
 						INSERT INTO comercio VALUES (29981,'Carrefour','Av T A Edison 555','B7466EWR','457755059512');
 						INSERT INTO comercio VALUES (82211,'Garbarino','Avenida 44 2049','C9275CVB','625050693943');
@@ -71,7 +71,7 @@ func CargarComercios(){
 	
 }
 	
-func CargarTarjetas(){ //decimal(t,c) total-cant decimales
+func cargarTarjetas(){ //decimal(t,c) total-cant decimales
 	_, err = db.Exec(`INSERT INTO tarjeta VALUES ('4382420954476737',81635249,'201205','201306','9184',50,'vigente');
 						INSERT INTO tarjeta VALUES ('7836666357653320',97824536,'201106','201205','1817',40,'vigente');
 						INSERT INTO tarjeta VALUES ('2732199710583851',16495823,'201804','202005','6701',45,'vigente');
@@ -94,6 +94,21 @@ func CargarTarjetas(){ //decimal(t,c) total-cant decimales
 						INSERT INTO tarjeta VALUES ('9184549155934952',93167854,'201801','201905','1218',32,'vigente');
 						INSERT INTO tarjeta VALUES ('2779243321116675',84396721,'201503','201706','1778',00,'vigente');
 						INSERT INTO tarjeta VALUES ('5333311040348954',84396721,'201608','201904','7991',50,'anulada');`)
+		if err != nil {
+			log.Fatal(err)
+		}
+}
+
+func cargarConsumos(){
+	_, err = db.Exec(`
+	
+					INSERT INTO consumo VALUES ('2779243321116675','1778',95169,54);
+					INSERT INTO consumo VALUES ('5333311040348954','7991',95169,23300);
+					INSERT INTO consumo VALUES ('4382420954476737','9184',95169,765);
+					INSERT INTO consumo VALUES ('9530652367572720','4728',95169,10);
+					  
+	
+	`)
 		if err != nil {
 			log.Fatal(err)
 		}
