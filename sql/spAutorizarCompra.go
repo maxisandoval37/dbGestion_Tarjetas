@@ -2,7 +2,7 @@ package sql
 
 import (
 	"log"
-	"strconv"
+	//"strconv"
 )
 
 type consumoObj struct {
@@ -12,14 +12,7 @@ type consumoObj struct {
 	monto        float64
 }
 
-var nroperacionCompra int = 0
-var nrorechazo int = 0
-
-func spAutorizarCompra() {	
-	
-	nroperacionCompra=nroperacionCompra+1;
-	nrorechazo=nrorechazo+1;
-	
+func spAutorizarCompra() {		
 	_, err = db.Query(
 		`create or replace function autorizar_compra(n_tarjeta tarjeta.nrotarjeta%type,
 						codigo tarjeta.codseguridad%type,
@@ -28,33 +21,34 @@ func spAutorizarCompra() {
 	DECLARE
 		tarjeta_encontrada record;  
 		compras_pendientes_de_pago compra.monto%type;
+		ntarjeta tarjeta.nrotarjeta%type;
 		
 	BEGIN
-		SELECT * INTO tarjeta_encontrada from tarjeta t where n_tarjeta = t.nrotarjeta; 
 		compras_pendientes_de_pago := (select sum (monto) from compra c WHERE c.nrotarjeta = n_tarjeta and c.pagado = false);
-
-		if not found  then           
-			INSERT INTO rechazo (nrorechazo,nrotarjeta, nrocomercio, fecha, monto, motivo) VALUES (`+strconv.Itoa(nrorechazo)+`,n_tarjeta, n_comercio, current_timestamp, monto_abonado, 'Tarjeta no valida');
+		
+		SELECT * INTO tarjeta_encontrada from tarjeta t where n_tarjeta = t.nrotarjeta; 
+		if not found then           
+			INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo) VALUES (n_tarjeta, n_comercio, current_timestamp, monto_abonado, 'Tarjeta no valida');
 			return false;	
 		
 		elsif tarjeta_encontrada.codseguridad != codigo then
-			 INSERT INTO rechazo (nrorechazo,nrotarjeta, nrocomercio, fecha, monto, motivo) VALUES (`+strconv.Itoa(nrorechazo)+`,n_tarjeta, n_comercio, current_timestamp, monto_abonado, 'Codigo de seguridad no valido');    
+			 INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo) VALUES (n_tarjeta, n_comercio, current_timestamp, monto_abonado, 'Codigo de seguridad no valido');    
 			 return false;
 
 		elsif tarjeta_encontrada.estado = 'suspendida' then
-			 INSERT INTO rechazo (nrorechazo,nrotarjeta, nrocomercio, fecha, monto, motivo) VALUES (`+strconv.Itoa(nrorechazo)+`,n_tarjeta, n_comercio, current_timestamp, monto_abonado, 'Tarjeta suspendida');   
+			 INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo) VALUES (n_tarjeta, n_comercio, current_timestamp, monto_abonado, 'Tarjeta suspendida');   
 			 return false;
 			 
 		elsif tarjeta_encontrada.estado = 'anulada' then
-			INSERT INTO rechazo (nrorechazo,nrotarjeta, nrocomercio, fecha, monto, motivo) VALUES (`+strconv.Itoa(nrorechazo)+`,n_tarjeta, n_comercio, current_timestamp, monto_abonado, 'Plazo de vigencia expirado');
+			INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo) VALUES (n_tarjeta, n_comercio, current_timestamp, monto_abonado, 'Plazo de vigencia expirado');
 			return false;
 						
 		elsif tarjeta_encontrada.limitecompra < (compras_pendientes_de_pago + monto_abonado)  then
-			INSERT INTO rechazo (nrorechazo,nrotarjeta, nrocomercio, fecha, monto, motivo) VALUES (`+strconv.Itoa(nrorechazo)+`,n_tarjeta, n_comercio, current_timestamp, monto_abonado, 'Supera límite de tarjeta');
+			INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo) VALUES (n_tarjeta, n_comercio, current_timestamp, monto_abonado, 'Supera límite de tarjeta');
 			return false;
 	
 		else
-			INSERT INTO compra (nrooperacion, nrotarjeta, nrocomercio, fecha, monto, pagado) VALUES (`+strconv.Itoa(nroperacionCompra)+`,n_tarjeta, n_comercio, current_timestamp, monto_abonado, false);
+			INSERT INTO compra (nrotarjeta, nrocomercio, fecha, monto, pagado) VALUES (n_tarjeta, n_comercio, current_timestamp, monto_abonado, false);
 			return true;
 		
 		end if;
@@ -64,7 +58,6 @@ $$ language plpgsql;`)
 	if err != nil {
 		log.Fatal(err)
 	}
-
 }
 
 func AutorizarCompra() {
@@ -88,7 +81,6 @@ func AutorizarCompra() {
 				log.Fatal(err)
 			}
 		}
-		
 }
 
 func TestConsumo(){
