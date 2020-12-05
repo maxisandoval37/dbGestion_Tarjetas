@@ -35,7 +35,7 @@ func spGenerarCierres() {
 }
 
 func cierres2020() {
-	_, err = db.Exec(`select generarCierres(2020);`)
+	_, err = db.Exec(`select generarCierres(2021);`)
 	if err != nil {
 		log.Fatal(err)
 	}

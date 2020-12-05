@@ -93,7 +93,7 @@ func cargarTarjetas(){ //decimal(t,c) total-cant decimales
 						INSERT INTO tarjeta VALUES ('4486467155848418',93167854,'200501','200701','1054',00,'vigente');
 						INSERT INTO tarjeta VALUES ('9184549155934952',93167854,'201801','201905','1218',32,'vigente');
 						INSERT INTO tarjeta VALUES ('2779243321116675',84396721,'202003','202006','1778',00,'vigente');
-						INSERT INTO tarjeta VALUES ('5333311040348954',84396721,'202008','202012','7991',50,'vigente');`)
+						INSERT INTO tarjeta VALUES ('5333311040348954',84396721,'201903','202305','7991',50,'vigente');`)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -101,14 +101,10 @@ func cargarTarjetas(){ //decimal(t,c) total-cant decimales
 
 func cargarConsumos(){
 	_, err = db.Exec(`
-	
 					INSERT INTO consumo VALUES ('2779243321116675','1778',95169,54);
 					INSERT INTO consumo VALUES ('5333311040348954','7991',95169,23300);
 					INSERT INTO consumo VALUES ('4382420954476737','9184',95169,765);
-					INSERT INTO consumo VALUES ('9530652367572720','4728',95169,10);
-					  
-	
-	`)
+					INSERT INTO consumo VALUES ('9530652367572720','4728',95169,10);`)
 		if err != nil {
 			log.Fatal(err)
 		}
