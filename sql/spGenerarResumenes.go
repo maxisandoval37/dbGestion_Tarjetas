@@ -5,85 +5,90 @@ import (
 )
 
 
-func GenerarResumen() {
-	_, err = db.Query(
-		`create or replace function generarResumen(cliente int, anioR int, mesR int) returns bool as $$
-		declare
-			   idResumen int;
-			   totalPagar decimal(7,2) := 0;
-			   _linea record;
-			   tarjeta char(16);
-		   
-				begin		
-				
-				FOR tarjeta IN 
-					Select nrotarjeta
-					From Tarjeta
-					Where nrocliente = cliente
-					and estado = 'vigente'
-				LOOP
-				
-				-- 	Generar Cabecera
-					INSERT INTO cabecera (nombre, apellido, domicilio, nrotarjeta, desde, hasta, vence) 
-					SELECT cli.nombre, cli.apellido, cli.domicilio, t.nrotarjeta, c.fechainicio, c.fechacierre, c.fechavto
-						FROM public.tarjeta t, public.cierre c, public.cliente cli
-						WHERE SUBSTRING (t.nrotarjeta, LENGTH(t.nrotarjeta), 1)::int = c.terminacion
-						and cli.nrocliente = t.nrocliente
-						and t.nrotarjeta = tarjeta
-						and c.año = anioR
-						and c.mes = mesR
-					RETURNING nroresumen INTO idResumen;
-				
-					if (idResumen is null) then
-						raise 'No se pudo generar el resumen, Cliente inexistente';
-						return False;
-					end if;	
-		
-				-- Generar detalle	
-					INSERT INTO detalle (nroresumen, nrolinea, fecha, nombrecomercio, monto) 
-					SELECT idResumen, ROW_NUMBER () OVER (ORDER BY t.nrotarjeta) as nrolinea, co.fecha, com.nombre , co.monto
-					FROM public.tarjeta t, public.cierre c, public.compra co, public.comercio com
-					WHERE SUBSTRING (t.nrotarjeta, LENGTH(t.nrotarjeta), 1)::int = c.terminacion
-					and co.nrotarjeta = t.nrotarjeta
-					and com.nrocomercio = co.nrocomercio
-					and t.nrotarjeta = tarjeta
-					and c.año = anioR
-					and c.mes = mesR
-					and co.fecha >= c.fechainicio 
-					and co.fecha <= c.fechacierre;	
-				
-					if (lastval() is NULL) then
-						raise 'No se pudo generar el resumen';
-						return False;
-					end if;	
-			
-				-- Actualizar Resumen
-					totalPagar := (SELECT SUM(monto) 
-								  FROM detalle 
-								  WHERE nroresumen = idResumen
-								  GROUP BY nroresumen);
-					 
-					UPDATE cabecera 
-					set total = COALESCE(NULLIF(totalPagar, 0), 0)
-					WHERE nroresumen = idResumen;	
-					
-				--Cambiar pagado a True
-					FOR _linea in SELECT * FROM public.tarjeta t, public.cierre c, public.compra co, public.comercio com
-						WHERE SUBSTRING (t.nrotarjeta, LENGTH(t.nrotarjeta), 1)::int = c.terminacion
-						and co.nrotarjeta = t.nrotarjeta
-						and com.nrocomercio = co.nrocomercio
-						and t.nrotarjeta = tarjeta 
-					LOOP
-						UPDATE compra set pagado = True where nrotarjeta=_linea.nrotarjeta and monto=_linea.monto;									
-					END LOOP;
-				
-				END LOOP;
-				
-				return True;
-				
-				   end;
-		$$ language plpgsql;`)
+
+
+func GenerarResumenesPrincipal () {
+	generarResumen()	
+	generarResumenes2()
+}
+
+
+func generarResumenes2() {
+	_, err = db.Query(`select generar_resumen(81635249, 2020, 5);
+				select generar_resumen(97824536, 2020, 12);
+				select generar_resumen(16495823, 2020, 12);
+				select generar_resumen(87512694, 2020, 12);
+				select generar_resumen(58214936, 2020, 12);
+				select generar_resumen(87219364, 2020, 6);
+				select generar_resumen(67918245, 2020, 6);
+				select generar_resumen(93527468, 2020, 6);
+				select generar_resumen(84396721, 2020, 6);`)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
+
+
+func generarResumen() {
+	_, err = db.Query(
+		`create or replace function generar_resumen(n_cliente cliente.nrocliente%type,
+						anio_par int,
+						mes_par int) returns void as $$
+	declare
+		cliente_encontrado record;
+		compra_aux record;
+		tarjeta_aux record;
+		cierre_aux record;
+		total_aux cabecera.total%type;
+		nroresumen_aux cabecera.nroresumen%type;
+		nombre_comercio comercio.nombre%type;
+		cont int := 1;
+
+	begin
+		select * into cliente_encontrado from cliente where nrocliente = n_cliente;
+		  if not found then
+	      		  raise 'Cliente % no existe.', n_cliente;
+  		  end if;
+		
+		for tarjeta_aux in select * from tarjeta where nrocliente = n_cliente loop
+
+			total_aux := 0;
+			select * into cierre_aux from cierre cie where cie.año = anio_par and cie.mes = mes_par and cie.terminacion = substring(tarjeta_aux.nrotarjeta, 16, 1)::int;
+
+			insert into cabecera(nombre, apellido, domicilio, nrotarjeta, desde, hasta, vence) 
+					values (cliente_encontrado.nombre, cliente_encontrado.apellido, cliente_encontrado.domicilio,tarjeta_aux.nrotarjeta, cierre_aux.fechainicio, cierre_aux.fechacierre,cierre_aux.fechavto);
+
+			select into nroresumen_aux nroresumen from cabecera where nrotarjeta = tarjeta_aux.nrotarjeta
+									and desde = cierre_aux.fechainicio
+									and hasta = cierre_aux.fechacierre;
+
+			for compra_aux in select * from compra where nrotarjeta = tarjeta_aux.nrotarjeta 
+								and fecha::date >= (cierre_aux.fechainicio)::date 
+								and fecha::date <= (cierre_aux.fechacierre)::date
+								and pagado = false loop
+				
+				nombre_comercio := (select nombre from comercio where nrocomercio = compra_aux.nrocomercio);
+				insert into detalle values (nroresumen_aux, cont, compra_aux.fecha, nombre_comercio, compra_aux.monto);
+				total_aux := total_aux + compra_aux.monto;
+				cont := cont + 1;
+				update compra set pagado = true where nrooperacion = compra_aux.nrooperacion;
+		
+			end loop;
+			
+			update cabecera set total = total_aux where nrotarjeta = tarjeta_aux.nrotarjeta
+									and desde = cierre_aux.fechainicio
+									and hasta = cierre_aux.fechacierre;
+		end loop;
+	end;
+$$ language plpgsql;`)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+
+
+
+
+
+
