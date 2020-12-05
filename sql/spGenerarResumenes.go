@@ -14,15 +14,15 @@ func GenerarResumenesPrincipal () {
 
 
 func generarResumenes2() {
-	_, err = db.Query(`select generar_resumen(81635249, 2020, 5);
-				select generar_resumen(97824536, 2020, 12);
-				select generar_resumen(16495823, 2020, 12);
-				select generar_resumen(87512694, 2020, 12);
-				select generar_resumen(58214936, 2020, 12);
-				select generar_resumen(87219364, 2020, 6);
-				select generar_resumen(67918245, 2020, 6);
-				select generar_resumen(93527468, 2020, 6);
-				select generar_resumen(84396721, 2020, 6);`)
+	_, err = db.Query(`SELECT generar_resumen(81635249, 2020, 5);
+				SELECT generar_resumen(97824536, 2020, 12);
+				SELECT generar_resumen(16495823, 2020, 12);
+				SELECT generar_resumen(87512694, 2020, 12);
+				SELECT generar_resumen(58214936, 2020, 12);
+				SELECT generar_resumen(87219364, 2020, 6);
+				SELECT generar_resumen(67918245, 2020, 6);
+				SELECT generar_resumen(93527468, 2020, 6);
+				SELECT generar_resumen(84396721, 2020, 6);`)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -45,30 +45,30 @@ func generarResumen() {
 		cont int := 1;
 
 	begin
-		select * into cliente_encontrado from cliente where nrocliente = n_cliente;
+		SELECT * INTO cliente_encontrado FROM cliente WHERE nrocliente = n_cliente;
 		  if not found then
 	      		  raise 'Cliente % no existe.', n_cliente;
   		  end if;
 		
-		for tarjeta_aux in select * from tarjeta where nrocliente = n_cliente loop
+		for tarjeta_aux in select * FROM tarjeta WHERE nrocliente = n_cliente loop
 
 			total_aux := 0;
-			select * into cierre_aux from cierre cie where cie.año = anio_par and cie.mes = mes_par and cie.terminacion = substring(tarjeta_aux.nrotarjeta, 16, 1)::int;
+			SELECT * INTO cierre_aux FROM cierre cie WHERE cie.año = anio_par and cie.mes = mes_par and cie.terminacion = substring(tarjeta_aux.nrotarjeta, 16, 1)::int;
 
-			insert into cabecera(nombre, apellido, domicilio, nrotarjeta, desde, hasta, vence) 
+			INSERT INTO cabecera(nombre, apellido, domicilio, nrotarjeta, desde, hasta, vence) 
 					values (cliente_encontrado.nombre, cliente_encontrado.apellido, cliente_encontrado.domicilio,tarjeta_aux.nrotarjeta, cierre_aux.fechainicio, cierre_aux.fechacierre,cierre_aux.fechavto);
 
-			select into nroresumen_aux nroresumen from cabecera where nrotarjeta = tarjeta_aux.nrotarjeta
+			SELECT INTO nroresumen_aux nroresumen FROM cabecera where nrotarjeta = tarjeta_aux.nrotarjeta
 									and desde = cierre_aux.fechainicio
 									and hasta = cierre_aux.fechacierre;
 
-			for compra_aux in select * from compra where nrotarjeta = tarjeta_aux.nrotarjeta 
+			for compra_aux in SELECT * FROM compra WHERE nrotarjeta = tarjeta_aux.nrotarjeta 
 								and fecha::date >= (cierre_aux.fechainicio)::date 
 								and fecha::date <= (cierre_aux.fechacierre)::date
 								and pagado = false loop
 				
-				nombre_comercio := (select nombre from comercio where nrocomercio = compra_aux.nrocomercio);
-				insert into detalle values (nroresumen_aux, cont, compra_aux.fecha, nombre_comercio, compra_aux.monto);
+				nombre_comercio := (SELECT nombre FROM comercio where nrocomercio = compra_aux.nrocomercio);
+				INSERT INTO detalle values (nroresumen_aux, cont, compra_aux.fecha, nombre_comercio, compra_aux.monto);
 				total_aux := total_aux + compra_aux.monto;
 				cont := cont + 1;
 				update compra set pagado = true where nrooperacion = compra_aux.nrooperacion;

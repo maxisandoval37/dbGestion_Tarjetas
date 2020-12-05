@@ -72,7 +72,7 @@ func menuPrincipal() {
 				nosql.CargaDatosNoDB()
 				fmt.Println("---------------------------\n    ¡DATOS NOSQL CARGADOS!\n---------------------------")
 			case opcion == 97:
-				sql.GenerarResumen()
+				sql.GenerarResumenesPrincipal()
 				fmt.Println("---------------------------\n    ¡RESUMENES GENERADOS!\n---------------------------")
 			default:
 				fmt.Println("Ingrese una opcion valida")
