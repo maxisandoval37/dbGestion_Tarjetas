@@ -28,14 +28,12 @@ func menuPrincipal() {
 			fmt.Println("7: Mostrar Todos Datos Cargados")
 			fmt.Println("8: Generar Cierres")
 			fmt.Println("9: Agregar Consumos")
+			
+			fmt.Println("96: Alertas")
+			
 			fmt.Println("97: Generar Resumenes")
-			
-			
-			
 			fmt.Println("98: CargarDatosNoSQL en BoltDB")
-
 			fmt.Println("99: Salir ")
-
 			fmt.Scanf("%d", &opcion)
 		
 		switch {
@@ -68,12 +66,20 @@ func menuPrincipal() {
 			case opcion == 9:
 				sql.TestConsumo()
 				fmt.Println("-----------------------------------------\n    ¡CONSUMOS AGREGADOS Y GESTIONADOS!\n-----------------------------------------")
-			case opcion == 98:
-				nosql.CargaDatosNoDB()
-				fmt.Println("---------------------------\n    ¡DATOS NOSQL CARGADOS!\n---------------------------")
+
+			case opcion == 96:
+				sql.Triggers()
+				fmt.Println("-------------------------\n    ¡GENERAR ALERTAS!\n-------------------------")
+
+
+
+
 			case opcion == 97:
 				sql.GenerarResumenesPrincipal()
 				fmt.Println("---------------------------\n    ¡RESUMENES GENERADOS!\n---------------------------")
+			case opcion == 98:
+				nosql.CargaDatosNoDB()
+				fmt.Println("---------------------------\n    ¡DATOS NOSQL CARGADOS!\n---------------------------")
 			default:
 				fmt.Println("Ingrese una opcion valida")
 			}
