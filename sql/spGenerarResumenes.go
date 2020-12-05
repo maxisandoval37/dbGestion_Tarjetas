@@ -14,7 +14,8 @@ func GenerarResumenesPrincipal () {
 
 
 func generarResumenes2() {
-	_, err = db.Query(`SELECT generar_resumen(81635249, 2020, 5);
+	_, err = db.Query(`
+				SELECT generar_resumen(81635249, 2020, 5);
 				SELECT generar_resumen(97824536, 2020, 12);
 				SELECT generar_resumen(16495823, 2020, 12);
 				SELECT generar_resumen(87512694, 2020, 12);
@@ -22,7 +23,8 @@ func generarResumenes2() {
 				SELECT generar_resumen(87219364, 2020, 6);
 				SELECT generar_resumen(67918245, 2020, 6);
 				SELECT generar_resumen(93527468, 2020, 6);
-				SELECT generar_resumen(84396721, 2020, 6);`)
+				SELECT generar_resumen(84396721, 2020, 10);
+				`)
 	if err != nil {
 		log.Fatal(err)
 	}

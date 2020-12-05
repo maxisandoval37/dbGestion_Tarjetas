@@ -63,7 +63,7 @@ func menuPrincipal() {
 				sql.MostrarTodosDatos()
 				fmt.Println("---------------------------\n    ¡DATOS MOSTRADOS!\n-------------------------")
 			case opcion == 8:
-				sql.SpGenerarCierres()
+				sql.Cierres()
 				fmt.Println("---------------------------\n    ¡DATOS CIERRES GENERADOS\n---------------------------")
 			case opcion == 9:
 				sql.TestConsumo()

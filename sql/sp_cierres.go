@@ -4,7 +4,7 @@ import (
 	"log"
 )
 
-func SpGenerarCierres() {
+func spGenerarCierres() {
 	_, err = db.Query(
 		`CREATE OR REPLACE function generarCierres(anio int) returns void as $$
 		Declare
@@ -32,5 +32,17 @@ func SpGenerarCierres() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func cierres2020() {
+	_, err = db.Exec(`select generarCierres(2020);`)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func Cierres(){
+	spGenerarCierres();
+	cierres2020();
 }
 

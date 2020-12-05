@@ -92,8 +92,8 @@ func cargarTarjetas(){ //decimal(t,c) total-cant decimales
 						INSERT INTO tarjeta VALUES ('6924033286851784',64723591,'201703','202001','8850',14,'vigente');
 						INSERT INTO tarjeta VALUES ('4486467155848418',93167854,'200501','200701','1054',00,'vigente');
 						INSERT INTO tarjeta VALUES ('9184549155934952',93167854,'201801','201905','1218',32,'vigente');
-						INSERT INTO tarjeta VALUES ('2779243321116675',84396721,'201503','201706','1778',00,'vigente');
-						INSERT INTO tarjeta VALUES ('5333311040348954',84396721,'201608','201904','7991',50,'anulada');`)
+						INSERT INTO tarjeta VALUES ('2779243321116675',84396721,'202003','202006','1778',00,'vigente');
+						INSERT INTO tarjeta VALUES ('5333311040348954',84396721,'202008','202012','7991',50,'vigente');`)
 		if err != nil {
 			log.Fatal(err)
 		}
