@@ -1,0 +1,17 @@
+= Trabajo Práctico de Bases de Datos
+Luna Nicolás <nluna190898@gmail.com>; @Montenegro Tomás <tomymontenegro1999@gmail.com>; Sandoval Maximiliano <maxisandoval98@gmail.com>;
+v1, {docdate}. Docentes Hernán Rondelli y Hernán Czemerinski
+:title-page:
+:numbered:
+:source-highlighter: coderay
+:tabsize: 4
+
+
+
+== Introducción
+
+== Descripción
+
+== Implementación
+
+== Conclusiones
