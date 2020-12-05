@@ -10,9 +10,8 @@ v1, {docdate}. Docentes Hernán Rondelli y Hernán Czemerinski
 
 == Introducción
 
-En el presente documento, se presentará el software de gestión de tarjetas y las funcionalidades que rodean a esta. Por medio de un modelo de bases de datos, representaremos, todos los tipos de entidades que vamos a usar, como lo es el caso de los clientes, las tarjetas, los comercios, los consumos, etc.
-Las instancias centrales para su respectivo desarrollo, serán el modelo de datos, la creación propiamente dicha de la base de datos (una principal SQL y otra secundaría NoSQL para su comparativa), la carga de los datos y las distintas funcionalidades que tendrá el sistema, por medio de Stored Procedures y Triggers.
-
+En el presente documento, se presentará el software de gestión de tarjetas y las funcionalidades que rodean a esta. Por medio de un modelo de bases de datos, representaremos, todos los tipos de entidades que vamos a usar, como lo es el caso de los clientes, las tarjetas, los comercios, los consumos, etc, que se verán a lo largo del desarrollo de este informe.
+Las instancias centrales para su respectivo desarrollo, serán el modelo de datos, la creación propiamente dicha de la base de datos (una principal SQL y otra secundaría NoSQL para su comparativa), la carga de los datos y las distintas funcionalidades que tendrá el sistema, por medio de Stored Procedures y Triggers. Cabe destacar, que para poder representar e interactuar con el software, utilizaremos una interfaz CLI (un super menú, por medio de la terminal).
 
 == Descripción
 
