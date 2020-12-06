@@ -33,14 +33,15 @@ Cabe aclarar, que todas las opciones que tenemos disponibles para interactuar, s
 
 Podemos acceder a las funcionalidades de autorización de compras, de la generación de resúmenes y las alertas (en el caso de los rechazos).
 
-En el caso de la autorización de compras, la lógica que se lleva a cabo es, en primera instancia tomamos todos los datos de la tabla consumo por medio de un struct auxiliar y una query, luego los vamos recorriendo uno por uno, cada dato que estamos recorriendo analizamos su correspondiente situación (si puede ser aprobado o no), por medio de la función “autorizar_compra”, los consumos validos generan compras, los inválidos rechazos (no generan compras).  Por medio de una cadena de condicionales, el método “autorizar_compra”, analiza los distintos tipos de estadios posibles, que una compra sea válida y en consecuencia autorizada o que, en los peores escenarios, la tarjeta sea invalida, el código de seguridad de la tarjeta no sea el correspondiente, la tarjeta se encuentre en estado suspendida, el plazo de vigencia este expirado, o que el consumo supere el límite de la tarjeta. 
+En el caso de la autorización de compras, la lógica que se lleva a cabo es, en primera instancia tomamos todos los datos de la tabla consumo por medio de un struct auxiliar y una query, luego los vamos recorriendo uno por uno, cada dato que estamos recorriendo analizamos su correspondiente situación (si puede ser aprobado o no), por medio de la función “autorizar_compra”, los consumos validos generan compras, los inválidos rechazos (no generan compras).  Por medio de una cadena de condicionales, el método “autorizar_compra”, analiza los distintos tipos de estados posibles, que una compra sea válida y en consecuencia autorizada o que, en los peores escenarios, la tarjeta sea invalida, el código de seguridad de la tarjeta no sea el correspondiente, la tarjeta se encuentre en estado suspendida, el plazo de vigencia este expirado, o que el consumo supere el límite de la tarjeta. 
 
 Una vez hecha las validaciones correspondientes a cada consumo, que se encontraban pendientes de analizar, dicho consumo, pasa a ser una compra (se la inserta a la tabla de compras) o pasa a formar parte del grupo de los consumos rechazados (se lo inserta en la tabla de rechazos). En el caso de la compra, en caso de que sea insertada correctamente, entra como estado de pago en false, ya que las compras se abonan todas juntas con el cierre de la tarjeta (resumen).
 
 En segundo lugar, en cuanto a los resúmenes {…}
 
 
-Finalmente, en cuanto a las alertas {…}
+Finalmente, en cuanto a las alertas, la funcionalidad que rodea a las alertas se centra en que cada vez que se percibe movimientos sospechosos de alguna tarjeta, algunos datos de especial importancia son guardados en la tabla alerta; casos como cuando se percibe un rechazo de tarjeta, cuando se hacen dos compras en menos de uno o cinco minutos en comencios distintos, o cuando una tarjeta registra dos rechazos en el mismo dia.
+Para la incorporación de estas necesidades funcionales se implementaron stored procedures y triggers que insertaban en la tabla alerta los datos correspondientes según la situacion, los triggers actuan en cualquiera de los casos planteados anteriormente, como por ejemplo en el caso del TRIGGER compra_rechazada() que en cuanto detecta que se inserto un valor en la tabla rechazo ejecuta una funcion que inserta nrotarjeta, nrorechazo, el dia y la hora del rechazo, entre otros datos dentro de alerta.
 
 
 == Conclusiones
