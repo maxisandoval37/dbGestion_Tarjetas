@@ -20,10 +20,14 @@ func generarResumenes2() {
 				SELECT generar_resumen(16495823, 2021, 12);
 				SELECT generar_resumen(87512694, 2021, 12);
 				SELECT generar_resumen(58214936, 2021, 12);
-				SELECT generar_resumen(87219364, 2021, 6);
-				SELECT generar_resumen(67918245, 2021, 6);
-				SELECT generar_resumen(93527468, 2021, 6);
+				SELECT generar_resumen(87219364, 2021, 11);
+				SELECT generar_resumen(67918245, 2021, 11);
+				SELECT generar_resumen(93527468, 2021, 11);
+				SELECT generar_resumen(93527468, 2021, 12);
 				SELECT generar_resumen(84396721, 2021, 11);
+				SELECT generar_resumen(51362874, 2021, 11);
+				SELECT generar_resumen(82974315, 2021, 11);
+				SELECT generar_resumen(82974315, 2021, 12);
 				`)
 	if err != nil {
 		log.Fatal(err)
