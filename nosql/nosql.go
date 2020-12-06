@@ -5,7 +5,6 @@ import (
 	"log"
 	"strconv"
 	bolt "github.com/coreos/bbolt"
-	// "fmt"
 )
 
 type Cliente struct {
@@ -47,7 +46,7 @@ var boltdb *bolt.DB
 var err error
 
 func dbConnection() {
-	boltdb, err = bolt.Open(".\no-sql\bolt_database\algo.db", 0600, nil)
+	boltdb, err = bolt.Open("./nosql/dbNoSQL.db", 0600, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -86,7 +85,6 @@ func cargarCliente(nro_cliente int, nombre string, apellido string, domicilio st
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	CreateUpdate(boltdb, "Cliente", []byte(strconv.Itoa(cliente.Nrocliente)), data)
 }
 
@@ -96,9 +94,7 @@ func cargarTarjeta(nro_tarjeta string, nro_cliente int, valida_desde string, val
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	CreateUpdate(boltdb, "Tarjeta", []byte(strconv.Itoa(tarjeta.Nrocliente)), data)
-
 }
 
 func cargarComercio(nro_comercio int, nombre string, domicilio string, codigo_postal string, telefono string) {
@@ -107,10 +103,7 @@ func cargarComercio(nro_comercio int, nombre string, domicilio string, codigo_po
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	CreateUpdate(boltdb, "Comercio", []byte(strconv.Itoa(comercio.Nrocomercio)), data)
-	
-
 }
 
 func cargarCompra(nro_operacion int, nro_tarjeta string, nro_comercio int, fecha string, monto int, pagado bool) {
@@ -121,7 +114,6 @@ func cargarCompra(nro_operacion int, nro_tarjeta string, nro_comercio int, fecha
 	}
 
 	CreateUpdate(boltdb, "Compra", []byte(strconv.Itoa(compra.Nrooperacion)), data)
-	
 }
 
 func CreateUpdate(db *bolt.DB, bucketName string, key []byte, val []byte) error {
