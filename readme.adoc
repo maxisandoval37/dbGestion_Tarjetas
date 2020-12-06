@@ -27,5 +27,20 @@ Luego, por su parte, dotamos la base de datos de funcionalidad, por medio de Sto
 Y finalmente, a modo de comparativa, guardaremos datos de clientes, tarjetas, comercios, y compras en una base de datos NoSQL (en BoltDB), con la estructura JSON respectiva. Más adelante se analizará su comportamiento, las diferencias y similitudes que tiene con una base de datos relacional.
 
 == Implementación
+En este apartado, vamos a explicar los ejes centrales de las funcionalidades implementadas en el software que tenemos a disposición.
+
+Cabe aclarar, que todas las opciones que tenemos disponibles para interactuar, se encuentran en el fichero “main.go”, tanto la base de datos relacional, como la no relacional. Aquí podemos acceder a las opciones de creación ambas bases de datos, setear las keys, agregar datos, entre algunas funciones que se explicaran a continuación.
+
+Podemos acceder a las funcionalidades de autorización de compras, de la generación de resúmenes y las alertas (en el caso de los rechazos).
+
+En el caso de la autorización de compras, la lógica que se lleva a cabo es, en primera instancia tomamos todos los datos de la tabla consumo por medio de un struct auxiliar y una query, luego los vamos recorriendo uno por uno, cada dato que estamos recorriendo analizamos su correspondiente situación (si puede ser aprobado o no), por medio de la función “autorizar_compra”, los consumos validos generan compras, los inválidos rechazos (no generan compras).  Por medio de una cadena de condicionales, el método “autorizar_compra”, analiza los distintos tipos de estadios posibles, que una compra sea válida y en consecuencia autorizada o que, en los peores escenarios, la tarjeta sea invalida, el código de seguridad de la tarjeta no sea el correspondiente, la tarjeta se encuentre en estado suspendida, el plazo de vigencia este expirado, o que el consumo supere el límite de la tarjeta. 
+
+Una vez hecha las validaciones correspondientes a cada consumo, que se encontraban pendientes de analizar, dicho consumo, pasa a ser una compra (se la inserta a la tabla de compras) o pasa a formar parte del grupo de los consumos rechazados (se lo inserta en la tabla de rechazos). En el caso de la compra, en caso de que sea insertada correctamente, entra como estado de pago en false, ya que las compras se abonan todas juntas con el cierre de la tarjeta (resumen).
+
+En segundo lugar, en cuanto a los resúmenes {…}
+
+
+Finalmente, en cuanto a las alertas {…}
+
 
 == Conclusiones
