@@ -26,8 +26,10 @@ Luego, por su parte, dotamos la base de datos de funcionalidad, por medio de Sto
 
 Y finalmente, a modo de comparativa, guardaremos datos de clientes, tarjetas, comercios, y compras en una base de datos NoSQL (en BoltDB), con la estructura JSON respectiva. Más adelante se analizará su comportamiento, las diferencias y similitudes que tiene con una base de datos relacional.
 
-.Menu Principal
+
+.Menú Principal
 image::main.JPG[]
+ 
 
 == Implementación
 En este apartado, vamos a explicar los ejes centrales de las funcionalidades implementadas en el software que tenemos a disposición.
@@ -48,3 +50,18 @@ Para la incorporación de estas necesidades funcionales se implementaron stored 
 
 
 == Conclusiones
+Como cierre, podemos comentar algunas cuestiones que como equipo nos parecieron interesantes. Durante el trabajo, logramos aprender y reforzar varios de los conocimientos que se presentaron a lo largo de la cursada.  
+
+Dentro de las dificultades que atravesamos, fueron al inicio, problemas de sintaxis muy frecuentes, aunque, al poco tiempo de dominar un poco más el lenguaje y el entorno se nos hizo mucho más ameno.  
+
+Además, al momento, de comenzar a desarrollar una nueva funcionalidad, en ocasiones se nos complicaba, las decisiones que debíamos tomar como equipo, cuáles eran las más correctas, acertadas o más propicias al problema y al contexto en el que estábamos trabajando. 
+
+Tuvimos problemas que arrastraban a otros, como lo que es el caso de pks repetidas (cosa que incumple con las propiedades básicas del modelo relacional), lo solucionamos pasando los identificadores al tipo de dato “serial” (antes hacíamos +1, a una variable auxiliar). Este tipo de dato, no ayudó muchísimo para todo lo que era incremental.
+
+Por su parte, nos pareció cautivador, el hecho de trabajar un modelo de bases de datos SQL y uno NoSQL. En cuanto al uso que le dimos nosotros, desde nuestra perspectiva, como estudiantes, con fines particulares y no comerciales, sin enfocarse tanto en las cuestiones de implementación internas, rendimientos u otros factores técnicos (si bien, tenemos entendido que internamente se comportan muy distintos), encontramos varias similitudes entre sí, en cuanto a la creación de la base de datos, la inserción de elementos y demás cuestiones básicas. En cuanto a NoSQL, nos pareció práctico (por lo menos como lo trabajamos), que los datos queden almacenados en un fichero independiente. Nos gustó que boltdb no requiera de instalación, ya que solo alcanza con importar el repositorio.
+
+JSON, nos pareció una excelente manera de almacenar estructuras de datos u objetos, sumamente entendible, en un lenguaje mucho más natural. 
+
+En conclusión, el trabajo fue un gran medio, para fortalecer todos los conocimientos de la materia e incorporar otros nuevos, por medio de diversas documentaciones. Además, sumamente enriquecedor, sobre factores humanos, como la convivencia de trabajar en grupo y determinar democráticamente las metodologías y decisiones de trabajo.
+
+image::https://moniqueilles.files.wordpress.com/2016/02/gracias.jpg[]
