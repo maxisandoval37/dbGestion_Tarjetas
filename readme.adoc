@@ -42,13 +42,161 @@ En el caso de la autorización de compras, la lógica que se lleva a cabo es, en
 
 Una vez hecha las validaciones correspondientes a cada consumo, que se encontraban pendientes de analizar, dicho consumo, pasa a ser una compra (se la inserta a la tabla de compras) o pasa a formar parte del grupo de los consumos rechazados (se lo inserta en la tabla de rechazos). En el caso de la compra, en caso de que sea insertada correctamente, entra como estado de pago en false, ya que las compras se abonan todas juntas con el cierre de la tarjeta (resumen).
 
+[source, sql]
+-------
+create or replace function autorizar_compra(n_tarjeta tarjeta.nrotarjeta%type,
+						codigo tarjeta.codseguridad%type,
+						n_comercio comercio.nrocomercio%type,
+						monto_abonado compra.monto%type) returns boolean as $$
+	DECLARE
+		tarjeta_encontrada record;  
+		compras_pendientes_de_pago compra.monto%type;
+		ntarjeta tarjeta.nrotarjeta%type;
+		
+	BEGIN
+		compras_pendientes_de_pago := (select sum (monto) from compra c WHERE c.nrotarjeta = n_tarjeta and c.pagado = false);
+		
+		SELECT * INTO tarjeta_encontrada from tarjeta t where n_tarjeta = t.nrotarjeta; 
+		if not found then           
+			INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo) VALUES (n_tarjeta, n_comercio, current_timestamp, monto_abonado, 'Tarjeta no valida');
+			return false;	
+		
+		elsif tarjeta_encontrada.codseguridad != codigo then
+			 INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo) VALUES (n_tarjeta, n_comercio, current_timestamp, monto_abonado, 'Codigo de seguridad no valido');    
+			 return false;
+
+		elsif tarjeta_encontrada.estado = 'suspendida' then
+			 INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo) VALUES (n_tarjeta, n_comercio, current_timestamp, monto_abonado, 'Tarjeta suspendida');   
+			 return false;
+			 
+		elsif tarjeta_encontrada.estado = 'anulada' then
+			INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo) VALUES (n_tarjeta, n_comercio, current_timestamp, monto_abonado, 'Plazo de vigencia expirado');
+			return false;
+						
+		elsif tarjeta_encontrada.limitecompra < (compras_pendientes_de_pago + monto_abonado)  then
+			INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo) VALUES (n_tarjeta, n_comercio, current_timestamp, monto_abonado, 'Supera límite de tarjeta');
+			return false;
+	
+		else
+			INSERT INTO compra (nrotarjeta, nrocomercio, fecha, monto, pagado) VALUES (n_tarjeta, n_comercio, current_timestamp, monto_abonado, false);
+			return true;
+		
+		end if;
+	end;
+$$ language plpgsql;
+-------
+
 En segundo lugar, en cuanto a los resúmenes la lógica es bastante simple, primero se corrobora que esa tarjeta exista, luego se basa en recorrer la tabla de tarjetas para encontrar la/s tarjeta/s que correspondan al cliente que se pasa por parámetro a la función generarResumen(). Para guardar el total del monto se usa una variable total aux y en una variable record llamada cierre_aux se guarda el cierre correspondiente a la tarjeta verificando que su terminación coincida. En la tabla cabecera se ingresan los datos correspondientes que se fueron obteniendo anteriormente y se coloca el nroresumen correspondiente a él del resumen de la tarjeta que se esté iterando. Además se recorren las compras y se buscan las que coincidan con la tarjeta y que la fecha este entre la fecha de inicio y de cierre y no esté pagada, para poder insertar los datos correspondientes en la tabla detalle.
 Para finalizar se ingresa el monto total correspondiente a el resumen en la tabla cabecera. 
+
+[source, sql]
+-------
+create or replace function generar_resumen(n_cliente cliente.nrocliente%type,anio_par int,mes_par int) returns void as $$
+	
+	DECLARE
+		cliente_encontrado record;
+		compra_aux record;
+		tarjeta_aux record;
+		cierre_aux record;
+		total_aux cabecera.total%type;
+		nroresumen_aux cabecera.nroresumen%type;
+		nombre_comercio comercio.nombre%type;
+		nrolinea int := 1;
+
+	BEGIN
+		SELECT * INTO cliente_encontrado FROM cliente WHERE nrocliente = n_cliente;
+		  if not found then
+	      		  RAISE 'Cliente % no existe.', n_cliente;
+  		  end if;
+		
+		FOR tarjeta_aux in select * FROM tarjeta WHERE nrocliente = n_cliente loop
+
+			total_aux := 0;
+			SELECT * INTO cierre_aux FROM cierre cie WHERE cie.año = anio_par and cie.mes = mes_par and cie.terminacion = substring(tarjeta_aux.nrotarjeta, 16, 1)::int;
+
+			INSERT INTO cabecera(nombre, apellido, domicilio, nrotarjeta, desde, hasta, vence) 
+					values (cliente_encontrado.nombre, cliente_encontrado.apellido, cliente_encontrado.domicilio,tarjeta_aux.nrotarjeta, cierre_aux.fechainicio, cierre_aux.fechacierre,cierre_aux.fechavto);
+
+			SELECT INTO nroresumen_aux nroresumen FROM cabecera where nrotarjeta = tarjeta_aux.nrotarjeta
+									and desde = cierre_aux.fechainicio
+									and hasta = cierre_aux.fechacierre;
+
+			FOR compra_aux in SELECT * FROM compra WHERE nrotarjeta = tarjeta_aux.nrotarjeta 
+								and fecha::date >= (cierre_aux.fechainicio)::date 
+								and fecha::date <= (cierre_aux.fechacierre)::date
+								and pagado = false loop
+				
+				nombre_comercio := (SELECT nombre FROM comercio where nrocomercio = compra_aux.nrocomercio);
+				INSERT INTO detalle values (nroresumen_aux, nrolinea, compra_aux.fecha, nombre_comercio, compra_aux.monto);
+				total_aux := total_aux + compra_aux.monto;
+				nrolinea := nrolinea + 1;
+				UPDATE compra set pagado = true WHERE nrooperacion = compra_aux.nrooperacion;
+		
+			end loop;
+			
+			UPDATE cabecera set total = total_aux where nrotarjeta = tarjeta_aux.nrotarjeta
+									and desde = cierre_aux.fechainicio
+									and hasta = cierre_aux.fechacierre;
+		end loop;
+	end;
+$$ language plpgsql;
+-------
 
 Finalmente, en cuanto a las alertas, la funcionalidad que rodea a las alertas se centra en que cada vez que se percibe movimientos sospechosos de alguna tarjeta, algunos datos de especial importancia son guardados en la tabla alerta; casos como cuando se percibe un rechazo de tarjeta, cuando se hacen dos compras en menos de uno o cinco minutos en comencios distintos, o cuando una tarjeta registra dos rechazos en el mismo dia.
 Para la incorporación de estas necesidades funcionales se implementaron stored procedures y triggers que insertaban en la tabla alerta los datos correspondientes según la situacion, los triggers actuan en cualquiera de los casos planteados anteriormente, como por ejemplo en el caso del TRIGGER compra_rechazada() que en cuanto detecta que se inserto un valor en la tabla rechazo ejecuta una funcion que inserta nrotarjeta, nrorechazo, el dia y la hora del rechazo, entre otros datos dentro de alerta.
 
+._Ejemplo de cuando la compra pendiente, ya es rechazada._
+[source, sql]
+-------
+CREATE OR REPLACE FUNCTION func_trigger_compra_rechazada() RETURNS TRIGGER AS $$
+	BEGIN
+		INSERT INTO alerta VALUES(DEFAULT, new.nrotarjeta, now(), new.nrorechazo, 0, 'rechazo');
+		RETURN new;
+	END;
+	$$ LANGUAGE plpgsql;
 
+	CREATE TRIGGER trigger_compra_rechazada 
+	AFTER 
+	INSERT ON rechazo
+	FOR EACH ROW
+	EXECUTE PROCEDURE func_trigger_compra_rechazada();
+-------
+
+._Ejemplo de dos intentos de compras en un lapso menor a un minuto._
+[source, sql]
+-------
+CREATE OR REPLACE FUNCTION func_trigger_compra_unminuto() RETURNS TRIGGER AS $$
+	DECLARE
+		anterior record;
+		codpostal_nueva record;
+		codpostal_anterior record;
+		
+	BEGIN
+
+		SELECT * INTO anterior FROM compra WHERE new.nrotarjeta = compra.nrotarjeta and 
+		compra.nrooperacion = (SELECT MAX (nrooperacion) FROM compra);
+
+		SELECT codigopostal INTO codpostal_nueva FROM comercio WHERE new.nrocomercio = comercio.nrocomercio;
+		SELECT codigopostal INTO codpostal_anterior FROM comercio WHERE anterior.nrocomercio = comercio.nrocomercio;
+
+		IF FOUND THEN
+			IF (((new.fecha - anterior.fecha) < INTERVAL '1 min')) and (codpostal_nueva = codpostal_anterior) THEN
+				INSERT INTO alerta VALUES(DEFAULT, new.nrotarjeta, now(), NULL, 1, 'compra 1min');
+			END IF;
+		END IF;
+
+		RETURN new;
+
+	END;
+
+	$$ LANGUAGE plpgsql;
+
+	CREATE TRIGGER trigger_compra_unminuto
+	BEFORE
+	INSERT ON compra
+	FOR EACH ROW
+	EXECUTE PROCEDURE func_trigger_compra_unminuto();
+-------
 == Conclusiones
 Como cierre, podemos comentar algunas cuestiones que como equipo nos parecieron interesantes. Durante el trabajo, logramos aprender y reforzar varios de los conocimientos que se presentaron a lo largo de la cursada.  
 
