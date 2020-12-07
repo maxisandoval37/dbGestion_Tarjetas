@@ -52,11 +52,10 @@ func BorrarPKs() {
 func BorrarFKs() {
 	_, err = db.Exec(`ALTER TABLE tarjeta DROP CONSTRAINT tarjeta_nrocliente_fk;
 					  ALTER TABLE compra DROP CONSTRAINT compra_nrocomercio_fk;
-					  ALTER TABLE rechazo DROP CONSTRAINT rechazo_nrotarjeta_fk;
 					  ALTER TABLE rechazo DROP CONSTRAINT rechazo_nrocomercio_fk;
 					  ALTER TABLE cabecera DROP CONSTRAINT cabecera_nrotarjeta_fk;
 					  ALTER TABLE detalle DROP CONSTRAINT detalle_cabecera_fk;
-					  ALTER TABLE alerta DROP CONSTRAINT alerta_nrotarjeta_fk;`)
+					`)
 	if err != nil {
 		log.Fatal(err)
 	}
