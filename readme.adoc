@@ -26,6 +26,9 @@ Luego, por su parte, dotamos la base de datos de funcionalidad, por medio de Sto
 
 Y finalmente, a modo de comparativa, guardaremos datos de clientes, tarjetas, comercios, y compras en una base de datos NoSQL (en BoltDB), con la estructura JSON respectiva. Más adelante se analizará su comportamiento, las diferencias y similitudes que tiene con una base de datos relacional.
 
+.Menu Principal
+image::main.JPG[]
+
 == Implementación
 En este apartado, vamos a explicar los ejes centrales de las funcionalidades implementadas en el software que tenemos a disposición.
 
