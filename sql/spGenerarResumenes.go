@@ -4,16 +4,13 @@ import (
 	"log"
 )
 
-
-
-
-func GenerarResumenesPrincipal () {
+func GenerarResumenesPrincipal() {
 	generarResumen()	
-	generarResumenes2()
+	datosParaResumen()
 }
 
 
-func generarResumenes2() {
+func datosParaResumen() {//nro cliente, año, mes
 	_, err = db.Query(`
 				SELECT generar_resumen(81635249, 2021, 5);
 				SELECT generar_resumen(97824536, 2021, 12);
@@ -37,10 +34,9 @@ func generarResumenes2() {
 
 func generarResumen() {
 	_, err = db.Query(
-		`create or replace function generar_resumen(n_cliente cliente.nrocliente%type,
-						anio_par int,
-						mes_par int) returns void as $$
-	declare
+		`create or replace function generar_resumen(n_cliente cliente.nrocliente%type,anio_par int,mes_par int) returns void as $$
+	
+	DECLARE
 		cliente_encontrado record;
 		compra_aux record;
 		tarjeta_aux record;
@@ -48,15 +44,15 @@ func generarResumen() {
 		total_aux cabecera.total%type;
 		nroresumen_aux cabecera.nroresumen%type;
 		nombre_comercio comercio.nombre%type;
-		cont int := 1;
+		nrolinea int := 1;
 
-	begin
+	BEGIN
 		SELECT * INTO cliente_encontrado FROM cliente WHERE nrocliente = n_cliente;
 		  if not found then
-	      		  raise 'Cliente % no existe.', n_cliente;
+	      		  RAISE 'Cliente % no existe.', n_cliente;
   		  end if;
 		
-		for tarjeta_aux in select * FROM tarjeta WHERE nrocliente = n_cliente loop
+		FOR tarjeta_aux in select * FROM tarjeta WHERE nrocliente = n_cliente loop
 
 			total_aux := 0;
 			SELECT * INTO cierre_aux FROM cierre cie WHERE cie.año = anio_par and cie.mes = mes_par and cie.terminacion = substring(tarjeta_aux.nrotarjeta, 16, 1)::int;
@@ -68,20 +64,20 @@ func generarResumen() {
 									and desde = cierre_aux.fechainicio
 									and hasta = cierre_aux.fechacierre;
 
-			for compra_aux in SELECT * FROM compra WHERE nrotarjeta = tarjeta_aux.nrotarjeta 
+			FOR compra_aux in SELECT * FROM compra WHERE nrotarjeta = tarjeta_aux.nrotarjeta 
 								and fecha::date >= (cierre_aux.fechainicio)::date 
 								and fecha::date <= (cierre_aux.fechacierre)::date
 								and pagado = false loop
 				
 				nombre_comercio := (SELECT nombre FROM comercio where nrocomercio = compra_aux.nrocomercio);
-				INSERT INTO detalle values (nroresumen_aux, cont, compra_aux.fecha, nombre_comercio, compra_aux.monto);
+				INSERT INTO detalle values (nroresumen_aux, nrolinea, compra_aux.fecha, nombre_comercio, compra_aux.monto);
 				total_aux := total_aux + compra_aux.monto;
-				cont := cont + 1;
-				update compra set pagado = true where nrooperacion = compra_aux.nrooperacion;
+				nrolinea := nrolinea + 1;
+				UPDATE compra set pagado = true WHERE nrooperacion = compra_aux.nrooperacion;
 		
 			end loop;
 			
-			update cabecera set total = total_aux where nrotarjeta = tarjeta_aux.nrotarjeta
+			UPDATE cabecera set total = total_aux where nrotarjeta = tarjeta_aux.nrotarjeta
 									and desde = cierre_aux.fechainicio
 									and hasta = cierre_aux.fechacierre;
 		end loop;

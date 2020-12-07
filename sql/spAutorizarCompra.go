@@ -2,7 +2,6 @@ package sql
 
 import (
 	"log"
-	//"strconv"
 )
 
 type consumoObj struct {

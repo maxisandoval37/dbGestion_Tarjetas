@@ -93,7 +93,7 @@ func cargarTarjetas(){ //decimal(t,c) total-cant decimales
 						INSERT INTO tarjeta VALUES ('4486467155848418',93167854,'202001','202212','1054',00,'vigente');
 						INSERT INTO tarjeta VALUES ('9184549155934952',93167854,'201901','202512','1218',32,'vigente');
 						INSERT INTO tarjeta VALUES ('2779243321116675',84396721,'202003','202406','1778',00,'vigente');
-						INSERT INTO tarjeta VALUES ('5333311040348954',84396721,'201903','202305','7991',50,'vigente');`)
+						INSERT INTO tarjeta VALUES ('5333311040348954',84396721,'201903','202305','7991',50,'anulada');`)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -109,14 +109,14 @@ func cargarConsumos(){
 					INSERT INTO consumo VALUES ('7229894669781604','4894',29981,4345);
 					INSERT INTO consumo VALUES ('6025188452991960','4864',29981,10000);
 					INSERT INTO consumo VALUES ('6025188452991960','4864',61351,1000);
-					
-					
+					INSERT INTO consumo VALUES ('2155972533112753','4310',34039,5);
+					INSERT INTO consumo VALUES ('2732199710583851','0000',34039,61);
+					INSERT INTO consumo VALUES ('1234567890123456','0000',38833,9999);
 					`)
 		if err != nil {
 			log.Fatal(err)
 		}
 }
-
 						
 //Cliente 84396721 tiene dos tarjetas
 //Cliente 93167854 tiene dos tarjetas

@@ -109,10 +109,10 @@ func Triggers() {
 		rechazos INT;
 
 	BEGIN
-		IF new.motivo = '?supera límite de tarjeta' THEN
+		IF new.motivo = '?Supera límite de tarjeta' THEN
 			SELECT COUNT (*) INTO rechazos FROM rechazo WHERE new.nrotarjeta = rechazo.nrotarjeta and 
 															new.fecha::date = rechazo.fecha::date
-															and rechazo.motivo = '?supera límite de tarjeta';
+															and rechazo.motivo = '?Supera límite de tarjeta';
 			IF rechazos = 2 THEN
 				UPDATE tarjeta SET estado = 'suspendida' WHERE new.nrotarjeta = tarjeta.nrotarjeta;
 				

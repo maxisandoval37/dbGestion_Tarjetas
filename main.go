@@ -54,6 +54,7 @@ func menuPrincipal() {
 		case opcion == 3:
 			sql.GenerarPKs()
 			sql.GenerarFKs()
+			fmt.Println("-------------------------------------")	
 			fmt.Println("--------- ¡KEYS  GENERADAS! ---------")
 			fmt.Println("-------------------------------------")		
 		case opcion == 4:
